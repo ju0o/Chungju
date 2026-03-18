@@ -10,3 +10,25 @@ env:
     availability:
       - BUILD
       - RUNTIME
+
+  - variable: DATABASE_URL
+    secret: DATABASE_URL
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_BASE_URL
+    value: https://market-a00ea.web.app
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: SUPER_ADMIN_EMAIL
+    secret: SUPER_ADMIN_EMAIL
+    availability:
+      - RUNTIME
+
+  - variable: SUPER_ADMIN_PASSWORD
+    secret: SUPER_ADMIN_PASSWORD
+    availability:
+      - RUNTIME

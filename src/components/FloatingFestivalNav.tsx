@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Camera, House, Image as ImageIcon, MapPinned } from "lucide-react";
+import { BookOpen, Camera, House, Image as ImageIcon, MapPinned, Star, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/", label: "홈", icon: House },
-  { href: "/tour", label: "투어", icon: MapPinned },
-  { href: "/guestbook", label: "방명록", icon: BookOpen },
-  { href: "/moments", label: "순간", icon: Camera },
-  { href: "/card", label: "카드", icon: ImageIcon },
+  { href: "/festival", label: "축제", icon: MapPinned },
+  { href: "/stamp/status", label: "스탬프", icon: Star },
+  { href: "/reviews", label: "후기", icon: BookOpen },
+  { href: "/my", label: "MY", icon: User },
 ];
 
 export function FloatingFestivalNav() {

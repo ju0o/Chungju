@@ -2,65 +2,93 @@
 
 import { useState } from "react";
 import { Eye, EyeOff, Shield } from "lucide-react";
-import { verifyAdminPassword } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export default function AdminLoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   return (
-    <main className="app-shell">
-      <section className="section-card rounded-[1.75rem] p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--muted)]">Admin Access</p>
-        <h1 className="mt-2 font-[family-name:var(--font-heading)] text-4xl">운영자 로그인</h1>
-        <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
-          접근 코드를 입력하면 서버 검증 후 httpOnly 세션 쿠키가 발급됩니다. 권한에 따라 보이는 메뉴가 달라집니다.
-        </p>
-        <form
-          className="mt-4 grid gap-3"
-          onSubmit={async (event) => {
-            event.preventDefault();
-            setLoading(true);
-            setError("");
-            try {
-              const result = await verifyAdminPassword(password);
-              if (result.ok) {
-                window.location.href = "/admin";
-                return;
-              }
-              setError("접근 코드를 확인하세요.");
-            } catch {
-              setError("로그인에 실패했습니다.");
-            } finally {
-              setLoading(false);
-            }
-          }}
-        >
-          <div className="relative">
-            <input
-              type={visible ? "text" : "password"}
-              className="festival-input pr-12"
-              placeholder="접근 코드"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            <button
-              type="button"
-              onClick={() => setVisible((value) => !value)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"
-            >
-              {visible ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
+    <main className="flex min-h-screen items-center justify-center bg-[var(--paper)] p-4">
+      <div className="w-full max-w-sm">
+        <section className="section-card rounded-[1.75rem] p-6">
+          <div className="text-center mb-5">
+            <div className="text-4xl mb-2">🔐</div>
+            <h1 className="text-xl font-bold">관리자 로그인</h1>
+            <p className="text-sm text-[var(--foreground-soft)] mt-1">축제 관리 시스템</p>
           </div>
-          {error ? <p className="text-sm text-red-600">{error}</p> : null}
-          <button disabled={loading} className="festival-button bg-[var(--foreground)] text-white">
-            <Shield size={18} />
-            관리자 로그인
-          </button>
-        </form>
-      </section>
+          {error && <p className="mb-3 rounded-xl bg-red-50 p-3 text-sm text-red-600 border border-red-200">{error}</p>}
+          <form
+            className="grid gap-4"
+            onSubmit={async (event) => {
+              event.preventDefault();
+              setLoading(true);
+              setError("");
+              try {
+                const res = await fetch("/api/auth/admin/login", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ email, password }),
+                });
+                const data = await res.json();
+                if (data.success) {
+                  router.push("/admin");
+                  return;
+                }
+                setError(data.error || "로그인에 실패했습니다.");
+              } catch {
+                setError("로그인에 실패했습니다.");
+              } finally {
+                setLoading(false);
+              }
+            }}
+          >
+            <div>
+              <label htmlFor="email" className="mb-1 block text-sm font-medium">이메일</label>
+              <input
+                id="email"
+                type="email"
+                className="festival-input w-full"
+                placeholder="admin@festival.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="mb-1 block text-sm font-medium">비밀번호</label>
+              <div className="relative">
+                <input
+                  id="password"
+                  type={visible ? "text" : "password"}
+                  className="festival-input w-full pr-12"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setVisible((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"
+                >
+                  {visible ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            <button disabled={loading} className="festival-button primary mt-2 w-full rounded-xl py-3 text-sm font-semibold">
+              <Shield size={18} />
+              {loading ? "로그인 중..." : "관리자 로그인"}
+            </button>
+          </form>
+        </section>
+      </div>
     </main>
   );
 }

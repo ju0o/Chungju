@@ -1,0 +1,340 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// 사용자 (일반 사용자 / 게스트)
+// ─────────────────────────────────────────────
+model User {
+  id          String   @id @default(cuid())
+  nickname    String   @default("방문객")
+  deviceId    String?  @unique @map("device_id")
+  sessionToken String? @unique @map("session_token")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  stampScans     StampScan[]
+  stampProgress  UserStampProgress[]
+  reviews        Review[]
+  userPhotocards UserPhotocard[]
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────
+// 관리자 사용자
+// ─────────────────────────────────────────────
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  name         String
+  role         AdminRole @default(ADMIN)
+  isActive     Boolean   @default(true) @map("is_active")
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  sessions  AdminSession[]
+  auditLogs AuditLog[]
+
+  @@map("admin_users")
+}
+
+model AdminSession {
+  id          String   @id @default(cuid())
+  adminUserId String   @map("admin_user_id")
+  tokenHash   String   @unique @map("token_hash")
+  ipAddress   String?  @map("ip_address")
+  userAgent   String?  @map("user_agent")
+  expiresAt   DateTime @map("expires_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  adminUser AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+
+  @@map("admin_sessions")
+}
+
+// ─────────────────────────────────────────────
+// 축제 정보
+// ─────────────────────────────────────────────
+model Festival {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @db.Text
+  startDate   DateTime @map("start_date")
+  endDate     DateTime @map("end_date")
+  location    String
+  address     String?
+  mapImageUrl String?  @map("map_image_url")
+  heroImageUrl String? @map("hero_image_url")
+  isActive    Boolean  @default(true) @map("is_active")
+  notices     Json     @default("[]") // [{title, content, date}]
+  faqs        Json     @default("[]") // [{question, answer}]
+  schedule    Json     @default("[]") // [{time, title, description, location}]
+  metadata    Json     @default("{}") // 추가 설정
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  booths         Booth[]
+  stampCampaigns StampCampaign[]
+  photocards     Photocard[]
+  rewards        Reward[]
+
+  @@map("festivals")
+}
+
+// ─────────────────────────────────────────────
+// 부스
+// ─────────────────────────────────────────────
+model Booth {
+  id           String   @id @default(cuid())
+  festivalId   String   @map("festival_id")
+  name         String
+  description  String   @db.Text
+  category     String   @default("일반")
+  location     String
+  mapX         Float?   @map("map_x")
+  mapY         Float?   @map("map_y")
+  operatingHours String? @map("operating_hours")
+  imageUrl     String?  @map("image_url")
+  contactInfo  String?  @map("contact_info")
+  isActive     Boolean  @default(true) @map("is_active")
+  sortOrder    Int      @default(0) @map("sort_order")
+  metadata     Json     @default("{}") // 추가 정보
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  festival  Festival     @relation(fields: [festivalId], references: [id], onDelete: Cascade)
+  qrCode    BoothQrCode?
+  reviews   Review[]
+
+  @@map("booths")
+}
+
+// ─────────────────────────────────────────────
+// 부스별 QR 코드
+// ─────────────────────────────────────────────
+model BoothQrCode {
+  id         String    @id @default(cuid())
+  boothId    String    @unique @map("booth_id")
+  token      String    @unique // crypto.randomUUID() 기반 예측 불가 토큰
+  isActive   Boolean   @default(true) @map("is_active")
+  validFrom  DateTime? @map("valid_from")
+  validUntil DateTime? @map("valid_until")
+  scanCount  Int       @default(0) @map("scan_count")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  booth      Booth      @relation(fields: [boothId], references: [id], onDelete: Cascade)
+  stampScans StampScan[]
+
+  @@map("booth_qr_codes")
+}
+
+// ─────────────────────────────────────────────
+// 스탬프 캠페인 (스탬프투어 정책)
+// ─────────────────────────────────────────────
+model StampCampaign {
+  id                String   @id @default(cuid())
+  festivalId        String   @map("festival_id")
+  name              String
+  description       String   @db.Text
+  requiredStamps    Int      @map("required_stamps") // 완료에 필요한 스탬프 수
+  startDate         DateTime @map("start_date")
+  endDate           DateTime @map("end_date")
+  isActive          Boolean  @default(true) @map("is_active")
+  allowDuplicateScan Boolean @default(false) @map("allow_duplicate_scan")
+  rewardDescription String?  @map("reward_description") @db.Text
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  festival    Festival            @relation(fields: [festivalId], references: [id], onDelete: Cascade)
+  stampScans  StampScan[]
+  progress    UserStampProgress[]
+  rewards     Reward[]
+
+  @@map("stamp_campaigns")
+}
+
+// ─────────────────────────────────────────────
+// 스탬프 스캔 기록
+// ─────────────────────────────────────────────
+model StampScan {
+  id              String   @id @default(cuid())
+  userId          String   @map("user_id")
+  qrCodeId        String   @map("qr_code_id")
+  stampCampaignId String   @map("stamp_campaign_id")
+  scannedAt       DateTime @default(now()) @map("scanned_at")
+  ipAddress       String?  @map("ip_address")
+  userAgent       String?  @map("user_agent")
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  qrCode        BoothQrCode   @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  stampCampaign StampCampaign @relation(fields: [stampCampaignId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, qrCodeId, stampCampaignId]) // 중복 스캔 방지
+  @@map("stamp_scans")
+}
+
+// ─────────────────────────────────────────────
+// 사용자 스탬프 진행도
+// ─────────────────────────────────────────────
+model UserStampProgress {
+  id              String    @id @default(cuid())
+  userId          String    @map("user_id")
+  stampCampaignId String    @map("stamp_campaign_id")
+  totalStamps     Int       @default(0) @map("total_stamps")
+  isCompleted     Boolean   @default(false) @map("is_completed")
+  completedAt     DateTime? @map("completed_at")
+  rewardClaimed   Boolean   @default(false) @map("reward_claimed")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stampCampaign StampCampaign @relation(fields: [stampCampaignId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, stampCampaignId])
+  @@map("user_stamp_progress")
+}
+
+// ─────────────────────────────────────────────
+// 방문 후기
+// ─────────────────────────────────────────────
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  HIDDEN
+  DELETED
+}
+
+model Review {
+  id        String       @id @default(cuid())
+  userId    String       @map("user_id")
+  boothId   String       @map("booth_id")
+  content   String       @db.Text
+  rating    Int          @default(5) // 1~5
+  imageUrls Json         @default("[]") @map("image_urls") // ["url1", "url2"]
+  status    ReviewStatus @default(PENDING)
+  adminNote String?      @map("admin_note") @db.Text
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booth Booth @relation(fields: [boothId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+// ─────────────────────────────────────────────
+// 포토카드 (템플릿)
+// ─────────────────────────────────────────────
+enum PhotocardRarity {
+  COMMON
+  UNCOMMON
+  RARE
+  EPIC
+  LEGENDARY
+}
+
+enum PhotocardConditionType {
+  BOOTH_VISIT    // 특정 부스 방문
+  STAMP_COUNT    // 스탬프 N개 달성
+  CAMPAIGN_COMPLETE // 캠페인 완료
+  REVIEW_WRITE   // 후기 작성
+  MANUAL         // 관리자 수동 지급
+}
+
+model Photocard {
+  id              String                @id @default(cuid())
+  festivalId      String                @map("festival_id")
+  name            String
+  description     String                @db.Text
+  imageUrl        String                @map("image_url")
+  rarity          PhotocardRarity       @default(COMMON)
+  conditionType   PhotocardConditionType @map("condition_type")
+  conditionValue  Json                  @default("{}") @map("condition_value")
+  // conditionValue 예: { boothId: "xxx" } 또는 { stampCount: 5 } 또는 { campaignId: "xxx" }
+  isPublic        Boolean               @default(true) @map("is_public")
+  maxIssuance     Int?                  @map("max_issuance") // null이면 무제한
+  issuedCount     Int                   @default(0) @map("issued_count")
+  sortOrder       Int                   @default(0) @map("sort_order")
+  createdAt       DateTime              @default(now()) @map("created_at")
+  updatedAt       DateTime              @updatedAt @map("updated_at")
+
+  festival       Festival        @relation(fields: [festivalId], references: [id], onDelete: Cascade)
+  userPhotocards UserPhotocard[]
+
+  @@map("photocards")
+}
+
+// ─────────────────────────────────────────────
+// 사용자 포토카드 소유 기록
+// ─────────────────────────────────────────────
+model UserPhotocard {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  photocardId String   @map("photocard_id")
+  acquiredAt  DateTime @default(now()) @map("acquired_at")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photocard Photocard @relation(fields: [photocardId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, photocardId]) // 동일 카드 중복 획득 방지
+  @@map("user_photocards")
+}
+
+// ─────────────────────────────────────────────
+// 보상
+// ─────────────────────────────────────────────
+model Reward {
+  id              String   @id @default(cuid())
+  festivalId      String   @map("festival_id")
+  stampCampaignId String?  @map("stamp_campaign_id")
+  name            String
+  description     String   @db.Text
+  requiredStamps  Int      @map("required_stamps")
+  imageUrl        String?  @map("image_url")
+  totalQuantity   Int?     @map("total_quantity") // null이면 무제한
+  claimedCount    Int      @default(0) @map("claimed_count")
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  festival      Festival       @relation(fields: [festivalId], references: [id], onDelete: Cascade)
+  stampCampaign StampCampaign? @relation(fields: [stampCampaignId], references: [id], onDelete: SetNull)
+
+  @@map("rewards")
+}
+
+// ─────────────────────────────────────────────
+// 감사 로그
+// ─────────────────────────────────────────────
+model AuditLog {
+  id          String   @id @default(cuid())
+  adminUserId String?  @map("admin_user_id")
+  action      String
+  target      String   // "booth", "festival", "qr", "review" 등
+  targetId    String?  @map("target_id")
+  details     Json     @default("{}") // before/after 스냅샷
+  ipAddress   String?  @map("ip_address")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  adminUser AdminUser? @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+
+  @@index([action])
+  @@index([target, targetId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
