@@ -1,0 +1,13 @@
+<svg width="640" height="840" viewBox="0 0 640 840" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="840" rx="42" fill="#F5F0E6"/>
+  <rect x="34" y="34" width="572" height="772" rx="32" fill="#FFFDF7" stroke="#D9D0C1"/>
+  <rect x="92" y="98" width="456" height="160" rx="22" fill="#B9D7DE"/>
+  <circle cx="166" cy="620" r="86" fill="#F0DEAA"/>
+  <circle cx="468" cy="528" r="110" fill="#EAB7BE"/>
+  <path d="M122 492C226 430 348 398 516 376" stroke="#5E5648" stroke-width="8" stroke-linecap="round"/>
+  <path d="M148 666C254 584 336 548 494 522" stroke="#7B9775" stroke-width="8" stroke-linecap="round"/>
+  <text x="92" y="156" fill="#5E5648" font-family="sans-serif" font-size="24" letter-spacing="4">FLOWER ARCHIVE</text>
+  <text x="92" y="362" fill="#2E2A23" font-family="serif" font-size="70">색의</text>
+  <text x="92" y="442" fill="#2E2A23" font-family="serif" font-size="70">기록</text>
+  <text x="92" y="722" fill="#DE8565" font-family="sans-serif" font-size="24">a small flower market essay</text>
+</svg>

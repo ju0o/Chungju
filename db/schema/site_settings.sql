@@ -1,0 +1,20 @@
+create table if not exists site_settings (
+  id text primary key,
+  festival_name text not null,
+  hero_title text not null,
+  hero_subtitle text,
+  festival_description text,
+  festival_date_text text,
+  festival_location text,
+  festival_hours text,
+  notice_text text,
+  poster_image_url text,
+  cover_image_url text,
+  primary_cta_label text,
+  secondary_cta_label text,
+  site_mode text not null check (site_mode in ('draft', 'live', 'ended', 'archive')),
+  archive_banner_title text,
+  archive_banner_description text,
+  updated_at timestamptz default now(),
+  updated_by text
+);
