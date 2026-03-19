@@ -13,7 +13,7 @@ export function TodayLineWall({ entries }: { entries: GuestbookEntry[] }) {
         >
           <div className="mb-3 flex items-center justify-between">
             <PaperLabel text={entry.mood} tone={index % 2 === 0 ? "petal" : "leaf"} />
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--foreground-soft)]">sentence note</span>
+            <span className="text-[10px] uppercase tracking-[0.14em] text-[var(--foreground-soft)]">sentence note</span>
           </div>
           <p className="quote-text text-[1.28rem] leading-9 text-[var(--foreground)]">“{entry.message}”</p>
           <div className="mt-4 flex items-center justify-between text-xs text-[var(--foreground-soft)]">

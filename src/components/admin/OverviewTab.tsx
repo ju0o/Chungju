@@ -23,7 +23,7 @@ export function OverviewTab({
 }) {
   return (
     <section className="section-card rounded-[1.75rem] p-5 text-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
         {ROLE_LABELS[role]}
       </p>
       <div className="mt-4 grid grid-cols-2 gap-3">

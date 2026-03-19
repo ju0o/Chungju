@@ -29,7 +29,7 @@ export function StampJourneySummary({
       </div>
       {completed ? (
         <div className="mt-5 rounded-[1.6rem] bg-[linear-gradient(135deg,#4f5b4c,#7b9775)] px-5 py-5 text-white shadow-[0_18px_32px_rgba(88,107,81,0.28)]">
-          <p className="text-xs uppercase tracking-[0.24em] text-white/70">Completion Badge</p>
+          <p className="text-xs uppercase tracking-[0.14em] text-white/70">Completion Badge</p>
           <p className="mt-2 font-[family-name:var(--font-heading)] text-4xl leading-tight">{badge}</p>
           <p className="mt-2 max-w-[24ch] text-sm leading-7 text-white/82">
             오늘의 동선을 모두 지나 꽃시장과 문장을 기록한 방문자에게 주어지는 배지입니다.

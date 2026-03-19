@@ -17,10 +17,10 @@ function AuthorFeatureCard({ booth }: { booth: BoothProfile }) {
         </div>
         <div className="grid gap-3">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-[rgba(222,133,101,0.12)] px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-[var(--accent-strong)]">
+            <span className="rounded-full bg-[rgba(222,133,101,0.12)] px-3 py-1 text-[11px] font-semibold tracking-[0.06em] text-[var(--accent-strong)]">
               FEATURED AUTHOR
             </span>
-            <span className="rounded-full bg-[rgba(123,151,117,0.12)] px-3 py-1 text-[11px] font-semibold tracking-[0.05em] text-[var(--leaf-deep)]">
+            <span className="rounded-full bg-[rgba(123,151,117,0.12)] px-3 py-1 text-[11px] font-semibold tracking-[0.06em] text-[var(--leaf-deep)]">
               {booth.participationType}
             </span>
           </div>
@@ -29,7 +29,7 @@ function AuthorFeatureCard({ booth }: { booth: BoothProfile }) {
             <p className="mt-1 text-sm leading-7 text-[var(--foreground-soft)]">{booth.subtitle}</p>
           </div>
           <div className="rounded-[1.2rem] border border-[var(--line)] bg-white/72 p-3">
-            <p className="flex items-center gap-2 text-xs font-semibold tracking-[0.12em] text-[var(--foreground-soft)]">
+            <p className="flex items-center gap-2 text-xs font-semibold tracking-[0.14em] text-[var(--foreground-soft)]">
               <BookOpenText size={14} />
               BOOK
             </p>
@@ -37,7 +37,7 @@ function AuthorFeatureCard({ booth }: { booth: BoothProfile }) {
             <p className="mt-2 text-sm leading-7 text-[var(--foreground-soft)]">{booth.bookDescription ?? booth.description}</p>
           </div>
           <div className="rounded-[1.2rem] bg-[linear-gradient(135deg,rgba(234,183,190,0.16),rgba(255,255,255,0.72))] p-3">
-            <p className="flex items-center gap-2 text-xs font-semibold tracking-[0.12em] text-[var(--foreground-soft)]">
+            <p className="flex items-center gap-2 text-xs font-semibold tracking-[0.14em] text-[var(--foreground-soft)]">
               <Quote size={14} />
               AUTHOR NOTE
             </p>

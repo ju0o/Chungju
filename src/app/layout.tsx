@@ -20,6 +20,19 @@ const bodyFont = IBM_Plex_Sans_KR({
 export const metadata: Metadata = {
   title: "#8 율량마르쉐 애착꽃시장",
   description: "살아있던 적이 없는 꽃을 팝니다, 그런데 이제 영원히 시들지 않는. 청주 애착꽃시장 기록 웹앱.",
+  manifest: "/manifest.json",
+  themeColor: "#de8565",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "애착꽃시장",
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
 };
 
 export default function RootLayout({

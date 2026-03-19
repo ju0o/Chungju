@@ -47,7 +47,7 @@ export function HeroBannerSlider() {
           </div>
         ))}
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white">
-          <div className="max-w-[18ch] rounded-full border border-white/25 bg-black/20 px-3 py-2 text-xs tracking-[0.08em] backdrop-blur-sm">
+          <div className="max-w-[18ch] rounded-full border border-white/25 bg-black/20 px-3 py-2 text-xs tracking-[0.06em] backdrop-blur-sm">
             {slides[activeIndex]?.caption}
           </div>
           <div className="flex gap-2">

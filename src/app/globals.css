@@ -144,7 +144,7 @@ select {
   font-size: 0.68rem;
   font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--foreground-soft);
 }
@@ -160,19 +160,19 @@ select {
 .section-description {
   max-width: 34ch;
   font-size: 0.95rem;
-  line-height: 1.82;
+  line-height: 1.78;
   letter-spacing: -0.012em;
   color: var(--foreground-soft);
 }
 
 .body-copy {
-  line-height: 1.82;
-  letter-spacing: -0.013em;
+  line-height: 1.78;
+  letter-spacing: -0.012em;
 }
 
 .hero-copy {
-  line-height: 1.86;
-  letter-spacing: -0.015em;
+  line-height: 1.78;
+  letter-spacing: -0.012em;
 }
 
 .paper-label {
@@ -269,7 +269,7 @@ select {
 .quote-text {
   font-family: var(--font-heading), serif;
   line-height: 1.55;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
 }
 
 .soft-pattern {

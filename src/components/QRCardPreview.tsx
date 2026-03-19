@@ -39,7 +39,7 @@ export function QRCardPreview({ point }: { point: StampPoint }) {
         <PaperLabel text="#8 율량마르쉐 애착꽃시장" tone="petal" />
       </div>
       <div ref={cardRef} className="mt-4 rounded-[1.6rem] border border-[var(--line)] bg-[rgba(255,251,244,0.9)] p-5">
-        <p className="text-xs uppercase tracking-[0.24em] text-[var(--foreground-soft)]">QR Print Card</p>
+        <p className="text-xs uppercase tracking-[0.14em] text-[var(--foreground-soft)]">QR Print Card</p>
         <h3 className="mt-2 font-[family-name:var(--font-heading)] text-[2rem] leading-tight">{point.title}</h3>
         <p className="mt-2 text-sm leading-7 text-[var(--foreground-soft)]">{point.description}</p>
         <div className="mt-5 flex justify-center rounded-[1.4rem] border border-dashed border-[var(--line)] bg-white/80 p-4">

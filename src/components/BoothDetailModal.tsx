@@ -19,7 +19,7 @@ export function BoothDetailModal({
       <div className="section-card w-full max-w-xl rounded-[1.8rem] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.24)]">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-[var(--foreground-soft)]">BOOTH DETAIL</p>
+            <p className="text-xs font-semibold tracking-[0.14em] text-[var(--foreground-soft)]">BOOTH DETAIL</p>
             <h3 className="mt-2 font-[family-name:var(--font-heading)] text-[2rem] leading-[1.15] tracking-[-0.03em]">{booth.name}</h3>
             <p className="mt-1 text-sm text-[var(--foreground-soft)]">{booth.authorName ? `작가 · ${booth.authorName}` : booth.subtitle}</p>
           </div>
@@ -37,12 +37,12 @@ export function BoothDetailModal({
           </div>
           <div className="grid gap-3">
             <div className="rounded-[1.2rem] border border-[var(--line)] bg-white/75 p-4">
-              <p className="text-xs font-semibold tracking-[0.16em] text-[var(--foreground-soft)]">책 소개</p>
+              <p className="text-xs font-semibold tracking-[0.14em] text-[var(--foreground-soft)]">책 소개</p>
               <p className="mt-2 text-base font-semibold tracking-[-0.02em] text-[var(--foreground)]">{booth.bookTitle}</p>
               <p className="body-copy mt-2 text-sm text-[var(--foreground-soft)]">{booth.bookDescription ?? booth.description}</p>
             </div>
             <div className="rounded-[1.2rem] border border-[var(--line)] bg-white/75 p-4">
-              <p className="text-xs font-semibold tracking-[0.16em] text-[var(--foreground-soft)]">작가 소개</p>
+              <p className="text-xs font-semibold tracking-[0.14em] text-[var(--foreground-soft)]">작가 소개</p>
               <p className="body-copy mt-2 text-sm text-[var(--foreground-soft)]">{booth.authorMessage ?? booth.description}</p>
             </div>
             <div className="grid gap-1 text-sm text-[var(--foreground)]">

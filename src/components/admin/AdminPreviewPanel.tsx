@@ -9,7 +9,7 @@ export function AdminPreviewPanel({
 }) {
   return (
     <aside className="section-card hidden rounded-[1.75rem] p-5 xl:block">
-      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">Preview</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">Preview</p>
       <h2 className="mt-2 font-[family-name:var(--font-heading)] text-3xl">{settings.heroTitle}</h2>
       <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{settings.heroDescription}</p>
       <div className="mt-4 grid gap-2">

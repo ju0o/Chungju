@@ -37,7 +37,7 @@ const labelMap = {
 export function AdminRouteNav({ role, pathname }: { role: AdminRole; pathname: string }) {
   return (
     <nav className="section-card rounded-[1.5rem] p-4">
-      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">{ROLE_LABELS[role]}</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">{ROLE_LABELS[role]}</p>
       <div className="mt-3 flex gap-2 overflow-x-auto">
         {ROLE_TABS[role].map((tab) => (
           <Link

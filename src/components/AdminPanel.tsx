@@ -98,7 +98,7 @@ export function AdminPanel({
       <section className="section-card rounded-[1.75rem] p-5">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
               {ROLE_LABELS[role]}
             </p>
             <h1 className="mt-1 font-[family-name:var(--font-heading)] text-4xl">운영자 대시보드</h1>

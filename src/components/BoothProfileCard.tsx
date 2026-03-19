@@ -23,7 +23,7 @@ export function BoothProfileCard({ booth }: { booth: BoothProfile }) {
           {booth.bookPrice ? <PaperLabel text={booth.bookPrice} /> : null}
         </div>
         <h2 className="mt-2 font-[family-name:var(--font-heading)] text-[2.1rem] leading-[1.18] tracking-[-0.03em]">{booth.name}</h2>
-        {booth.authorName ? <p className="mt-2 text-sm tracking-[0.01em] text-[var(--foreground-soft)]">작가 · {booth.authorName}</p> : null}
+        {booth.authorName ? <p className="mt-2 text-sm tracking-[0.02em] text-[var(--foreground-soft)]">작가 · {booth.authorName}</p> : null}
         <p className="body-copy mt-3 text-sm text-[var(--foreground-soft)]">{booth.description}</p>
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
           <button
@@ -78,11 +78,11 @@ export function BoothProfileCard({ booth }: { booth: BoothProfile }) {
           </div>
           <div className="grid gap-3">
             <div className="rounded-[1.3rem] border border-[var(--line)] bg-white/70 p-4">
-              <p className="text-xs uppercase tracking-[0.22em] text-[var(--foreground-soft)]">대표 문장</p>
+              <p className="text-xs uppercase tracking-[0.14em] text-[var(--foreground-soft)]">대표 문장</p>
               <blockquote className="quote-text mt-3 text-[1.06rem] leading-8">“{booth.favoriteQuote ?? booth.quote}”</blockquote>
             </div>
             <div className="rounded-[1.3rem] border border-[var(--line)] bg-white/70 p-4">
-              <p className="text-xs uppercase tracking-[0.22em] text-[var(--foreground-soft)]">작가의 말</p>
+              <p className="text-xs uppercase tracking-[0.14em] text-[var(--foreground-soft)]">작가의 말</p>
               <p className="body-copy mt-3 text-sm text-[var(--foreground-soft)]">{booth.authorMessage ?? booth.description}</p>
             </div>
             <div className="grid gap-3 text-sm text-[var(--foreground)]">

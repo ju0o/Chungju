@@ -28,6 +28,7 @@ const ADMIN_MENU = [
   { href: '/admin/rewards', icon: '🎁', label: '보상 관리', desc: '보상 조건, 수량 관리', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/users', icon: '👥', label: '참여 현황', desc: '사용자별 참여도 조회', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/logs', icon: '📋', label: '감사로그', desc: '시스템 활동 기록', roles: ['SUPER_ADMIN', 'ADMIN'] },
+  { href: '/admin/members', icon: '🔑', label: '관리자 관리', desc: '관리자 계정 생성, 역할/권한 관리', roles: ['SUPER_ADMIN'] },
 ];
 
 export default function AdminDashboardPage() {
