@@ -1,11 +1,14 @@
+import { AnnouncementBanner } from "@/components/AnnouncementBanner";
 import { ArchiveModeBanner } from "@/components/ArchiveModeBanner";
 import { ArchiveGalleryPreview } from "@/components/ArchiveGalleryPreview";
 import { AuthorShowcaseSection } from "@/components/AuthorShowcaseSection";
+import { BoothCrowdBar } from "@/components/BoothCrowdBar";
 import { BoothProfileCard } from "@/components/BoothProfileCard";
 import { PaperLabel } from "@/components/CollageOrnaments";
 import { FestivalIntroCard } from "@/components/FestivalIntroCard";
 import { HeroSection } from "@/components/HeroSection";
 import { InteractiveFestivalMap } from "@/components/InteractiveFestivalMap";
+import { LiveVisitorCounter } from "@/components/LiveVisitorCounter";
 import { ProgramBoard } from "@/components/ProgramBoard";
 import { QuoteDrawCard } from "@/components/QuoteDrawCard";
 import { SavedInterestSection } from "@/components/SavedInterestSection";
@@ -23,7 +26,9 @@ export default async function HomePage() {
 
   return (
     <main className="app-shell grid gap-4">
+      <AnnouncementBanner />
       <HeroSection settings={settings} />
+      <LiveVisitorCounter />
       {isArchive ? <ArchiveModeBanner message={settings.archiveNotice} /> : null}
       <section className="section-card paper-stack soft-pattern rounded-[1.75rem] p-5">
         <SectionHeader eyebrow="Today" title={TODAY_COPY.title} description={TODAY_COPY.body} />
@@ -53,6 +58,7 @@ export default async function HomePage() {
       {settings.sectionVisibility.showMap ? <InteractiveFestivalMap points={stampPoints} booths={settings.booths} /> : null}
       {settings.sectionVisibility.showPrograms ? <ProgramBoard items={settings.programs} /> : null}
       <ArchiveGalleryPreview moments={moments} />
+      <BoothCrowdBar />
       {settings.sectionVisibility.showBooths ? (
         <section className="grid gap-3">
           <SectionHeader eyebrow="Booths" title="문화 부스 소개" description="책과 문장, 꽃과 작은 전시가 머무름의 이유가 되는 공간들을 먼저 살펴보세요." />

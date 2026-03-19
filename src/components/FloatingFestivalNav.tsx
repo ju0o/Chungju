@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, House, MapPinned, Share2, Star, User } from "lucide-react";
+import { Heart, House, MapPinned, Share2, Star, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/", label: "홈", icon: House },
   { href: "/festival", label: "축제", icon: MapPinned },
   { href: "/stamp/status", label: "스탬프", icon: Star },
-  { href: "/reviews", label: "후기", icon: BookOpen },
+  { href: "/favorites", label: "찜", icon: Heart },
   { href: "/my", label: "MY", icon: User },
 ];
 

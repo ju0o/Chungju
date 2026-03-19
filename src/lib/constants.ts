@@ -94,12 +94,12 @@ export const DEFAULT_STAMP_POINTS: StampPoint[] = [
 
 export const DEFAULT_EVENT_SETTINGS: EventSettings = {
   eventName: "#8 율량마르쉐 애착꽃시장",
-  heroTitle: "살아있던 적이 없는 꽃을 팝니다,\n그런데 이제 영원히 시들지 않는.",
+  heroTitle: "살아있던 적이\n없는 꽃을 팝니다,\n그런데 이제 영원히\n시들지 않는.",
   heroDescription:
     "봄의 공원에 잠시 펼쳐진 꽃시장과 문화 마켓, 한 조각의 문장과 기록이 오래 남는 느린 산책형 아카이브입니다.",
-  eventDate: "2026.03.12",
+  eventDate: "2026.03.28 - 29",
   eventPlace: "청주 율량동 공원 & 애착꽃시장",
-  operationHours: "13:00 - 18:00",
+  operationHours: "11:00 - 17:30",
   notice: "현장에 남겨진 문장과 순간은 행사 분위기를 지키기 위해 운영자가 검수할 수 있습니다.",
   archiveNotice:
     "오늘의 애착꽃시장은 문을 닫았어요. 이제 이 사이트는 남겨진 문장과 순간을 천천히 읽는 아카이브 모드로 전환되었습니다.",

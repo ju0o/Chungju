@@ -41,8 +41,10 @@ body {
   min-height: 100vh;
   color: var(--foreground);
   font-family: var(--font-body), sans-serif;
-  line-height: 1.58;
-  letter-spacing: -0.012em;
+  line-height: 1.62;
+  letter-spacing: -0.014em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
   background:
     radial-gradient(circle at 12% 12%, rgba(234, 183, 190, 0.1), transparent 18%),
     radial-gradient(circle at 88% 18%, rgba(185, 215, 222, 0.14), transparent 20%),

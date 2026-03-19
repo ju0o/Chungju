@@ -22,6 +22,7 @@ model User {
   stampProgress  UserStampProgress[]
   reviews        Review[]
   userPhotocards UserPhotocard[]
+  quizSubmissions QuizSubmission[]
 
   @@map("users")
 }
@@ -91,6 +92,7 @@ model Festival {
   stampCampaigns StampCampaign[]
   photocards     Photocard[]
   rewards        Reward[]
+  quizzes        Quiz[]
 
   @@map("festivals")
 }
@@ -119,6 +121,7 @@ model Booth {
   festival  Festival     @relation(fields: [festivalId], references: [id], onDelete: Cascade)
   qrCode    BoothQrCode?
   reviews   Review[]
+  crowdStatus BoothCrowdStatus?
 
   @@map("booths")
 }
@@ -337,4 +340,108 @@ model AuditLog {
   @@index([target, targetId])
   @@index([createdAt])
   @@map("audit_logs")
+}
+
+// ─────────────────────────────────────────────
+// 부스 혼잡도 (관리자 입력)
+// ─────────────────────────────────────────────
+enum CrowdLevel {
+  LOW      // 여유
+  MODERATE // 보통
+  HIGH     // 붐빔
+}
+
+model BoothCrowdStatus {
+  id        String     @id @default(cuid())
+  boothId   String     @unique @map("booth_id")
+  level     CrowdLevel @default(LOW)
+  waitMin   Int        @default(0) @map("wait_min") // 예상 대기 시간(분)
+  note      String?    @db.Text
+  updatedBy String?    @map("updated_by")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  booth Booth @relation(fields: [boothId], references: [id], onDelete: Cascade)
+
+  @@map("booth_crowd_status")
+}
+
+// ─────────────────────────────────────────────
+// 공지 팝업/배너
+// ─────────────────────────────────────────────
+model Announcement {
+  id         String   @id @default(cuid())
+  title      String
+  content    String   @db.Text
+  type       String   @default("banner") // "banner" | "popup" | "urgent"
+  isActive   Boolean  @default(true) @map("is_active")
+  priority   Int      @default(0)
+  startAt    DateTime? @map("start_at")
+  endAt      DateTime? @map("end_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("announcements")
+}
+
+// ─────────────────────────────────────────────
+// 축제 퀴즈
+// ─────────────────────────────────────────────
+model Quiz {
+  id           String   @id @default(cuid())
+  festivalId   String   @map("festival_id")
+  question     String   @db.Text
+  choices      Json     @default("[]") // ["선택1","선택2","선택3","선택4"]
+  correctIndex Int      @map("correct_index") // 0-based
+  explanation  String?  @db.Text
+  rewardType   String?  @map("reward_type") // "stamp" | "photocard" | null
+  rewardValue  Json?    @map("reward_value")
+  isActive     Boolean  @default(true) @map("is_active")
+  sortOrder    Int      @default(0) @map("sort_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  festival    Festival     @relation(fields: [festivalId], references: [id], onDelete: Cascade)
+  submissions QuizSubmission[]
+
+  @@map("quizzes")
+}
+
+model QuizSubmission {
+  id          String   @id @default(cuid())
+  quizId      String   @map("quiz_id")
+  userId      String   @map("user_id")
+  chosenIndex Int      @map("chosen_index")
+  isCorrect   Boolean  @map("is_correct")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([quizId, userId]) // 퀴즈별 1회 응답
+  @@map("quiz_submissions")
+}
+
+// ─────────────────────────────────────────────
+// 실시간 방문자 카운터 (heartbeat)
+// ─────────────────────────────────────────────
+model ActiveVisitor {
+  id        String   @id @default(cuid())
+  sessionId String   @unique @map("session_id")
+  lastSeen  DateTime @default(now()) @map("last_seen")
+
+  @@index([lastSeen])
+  @@map("active_visitors")
+}
+
+// ─────────────────────────────────────────────
+// 베스트 모먼트 (오늘의 베스트 사진)
+// ─────────────────────────────────────────────
+model FeaturedMoment {
+  id        String   @id @default(cuid())
+  momentId  String   @map("moment_id") // public_moments의 id 참조
+  pickedAt  DateTime @default(now()) @map("picked_at")
+  pickedBy  String?  @map("picked_by") // adminUserId
+  note      String?
+
+  @@index([pickedAt])
+  @@map("featured_moments")
 }
