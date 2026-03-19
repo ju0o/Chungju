@@ -5,6 +5,8 @@ import { AuthorShowcaseSection } from "@/components/AuthorShowcaseSection";
 import { BoothCrowdBar } from "@/components/BoothCrowdBar";
 import { BoothProfileCard } from "@/components/BoothProfileCard";
 import { PaperLabel } from "@/components/CollageOrnaments";
+import { DdayCounter } from "@/components/DdayCounter";
+import { FeaturedMomentsSection } from "@/components/FeaturedMomentsSection";
 import { FestivalIntroCard } from "@/components/FestivalIntroCard";
 import { HeroSection } from "@/components/HeroSection";
 import { InteractiveFestivalMap } from "@/components/InteractiveFestivalMap";
@@ -28,7 +30,10 @@ export default async function HomePage() {
     <main className="app-shell grid gap-4">
       <AnnouncementBanner />
       <HeroSection settings={settings} />
-      <LiveVisitorCounter />
+      <div className="flex flex-wrap items-center gap-3">
+        <LiveVisitorCounter />
+        <DdayCounter />
+      </div>
       {isArchive ? <ArchiveModeBanner message={settings.archiveNotice} /> : null}
       <section className="section-card paper-stack soft-pattern rounded-[1.75rem] p-5">
         <SectionHeader eyebrow="Today" title={TODAY_COPY.title} description={TODAY_COPY.body} />
@@ -58,6 +63,7 @@ export default async function HomePage() {
       {settings.sectionVisibility.showMap ? <InteractiveFestivalMap points={stampPoints} booths={settings.booths} /> : null}
       {settings.sectionVisibility.showPrograms ? <ProgramBoard items={settings.programs} /> : null}
       <ArchiveGalleryPreview moments={moments} />
+      <FeaturedMomentsSection />
       <BoothCrowdBar />
       {settings.sectionVisibility.showBooths ? (
         <section className="grid gap-3">

@@ -1,4 +1,5 @@
 import { PaperLabel } from "@/components/CollageOrnaments";
+import { GuestbookLikeButton } from "@/components/GuestbookLikeButton";
 import { reportGuestbook } from "@/lib/api";
 import { GuestbookEntry } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
@@ -20,16 +21,19 @@ export function TodayLineWall({ entries }: { entries: GuestbookEntry[] }) {
             <span>{entry.nickname}</span>
             <span>{formatDate(entry.createdAt)}</span>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              const reason = window.prompt("신고 사유를 입력해주세요.", "부적절한 표현") ?? "기타";
-              reportGuestbook(entry.id, reason);
-            }}
-            className="mt-3 rounded-full border border-[var(--line)] bg-white/70 px-3 py-2 text-xs text-[var(--foreground-soft)]"
-          >
-            신고
-          </button>
+          <div className="mt-3 flex items-center gap-2">
+            <GuestbookLikeButton entryId={entry.id} />
+            <button
+              type="button"
+              onClick={() => {
+                const reason = window.prompt("신고 사유를 입력해주세요.", "부적절한 표현") ?? "기타";
+                reportGuestbook(entry.id, reason);
+              }}
+              className="rounded-full border border-[var(--line)] bg-white/70 px-3 py-2 text-xs text-[var(--foreground-soft)]"
+            >
+              신고
+            </button>
+          </div>
         </article>
       ))}
     </div>

@@ -29,6 +29,7 @@ const ADMIN_MENU = [
   { href: '/admin/quiz-manage', icon: '📝', label: '퀴즈 관리', desc: '축제 퀴즈 생성, 참여 현황 관리', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/announcements', icon: '📢', label: '공지 관리', desc: '긴급 공지, 배너, 팝업 관리', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/crowd', icon: '📊', label: '혼잡도 관리', desc: '부스별 실시간 혼잡도 업데이트', roles: ['SUPER_ADMIN', 'ADMIN'] },
+  { href: '/admin/stats', icon: '📈', label: '상세 통계', desc: '시간대별·일별 통계 분석 대시보드', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/users', icon: '👥', label: '참여 현황', desc: '사용자별 참여도 조회', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/logs', icon: '📋', label: '감사로그', desc: '시스템 활동 기록', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/members', icon: '🔑', label: '관리자 관리', desc: '관리자 계정 생성, 역할/권한 관리', roles: ['SUPER_ADMIN'] },

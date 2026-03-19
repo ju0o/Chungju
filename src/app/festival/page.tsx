@@ -50,11 +50,15 @@ export default async function FestivalPage() {
       </section>
 
       {/* 빠른 링크 */}
-      <section className="grid grid-cols-2 gap-3 px-4 sm:grid-cols-4">
+      <section className="grid grid-cols-4 gap-3 px-4">
         {[
           { href: '/booths', icon: '🏪', label: '부스 보기' },
           { href: '/stamp', icon: '🎫', label: '스탬프 투어' },
-          { href: '/reviews', icon: '💬', label: '방문 후기' },
+          { href: '/quiz', icon: '📝', label: '축제 퀴즈' },
+          { href: '/timeline', icon: '📋', label: '타임라인' },
+          { href: '/photobooth', icon: '📸', label: '포토부스' },
+          { href: '/share-card', icon: '🎨', label: '공유 카드' },
+          { href: '/leaderboard', icon: '🏆', label: '랭킹' },
           { href: '/my', icon: '👤', label: '마이페이지' },
         ].map((item) => (
           <Link key={item.href} href={item.href} className="section-card flex flex-col items-center gap-2 rounded-2xl p-4 text-center transition-transform hover:scale-[1.02]">

@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { BoothReviewSection } from '@/components/booth/BoothReviewSection';
+import { FavoriteButton } from '@/components/FavoriteButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -50,6 +51,7 @@ export default async function BoothDetailPage({ params }: { params: Promise<{ id
             {booth.qrCode?.isActive && (
               <span className="rounded-full bg-[var(--accent-coral)]/15 px-2 py-0.5 text-xs text-[var(--accent-coral)]">🎫 스탬프 가능</span>
             )}
+            <FavoriteButton boothId={booth.id} />
           </div>
           <h1 className="section-title mt-2 text-xl font-bold">{booth.name}</h1>
           <div className="mt-2 flex items-center gap-3 text-sm text-[var(--foreground-soft)]">
