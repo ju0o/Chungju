@@ -12,9 +12,15 @@ interface PhotocardItem {
   rarity: PhotocardRarityType;
   conditionType: PhotocardConditionTypeValue;
   conditionValue: Record<string, unknown>;
-  maxSupply: number | null;
+  maxIssuance: number | null;
   isActive: boolean;
   _count: { userPhotocards: number };
+}
+
+interface FestivalItem {
+  id: string;
+  name: string;
+  isActive: boolean;
 }
 
 const RARITY_COLORS: Record<string, string> = {
@@ -36,12 +42,14 @@ const CONDITION_LABELS: Record<string, string> = {
 export default function AdminCardsPage() {
   const { session, loading: authLoading } = useAdminSession();
   const router = useRouter();
+  const { data: festivals } = useApiData<FestivalItem[]>(session ? '/api/festivals' : null);
+  const activeFestivalId = festivals?.find(f => f.isActive)?.id || festivals?.[0]?.id;
   const { data: cards, loading, refetch } = useApiData<PhotocardItem[]>(session ? '/api/photocards' : null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
-    name: '', imageUrl: '', rarity: 'COMMON' as PhotocardRarityType,
+    name: '', description: '', imageUrl: '', rarity: 'COMMON' as PhotocardRarityType,
     conditionType: 'MANUAL' as PhotocardConditionTypeValue,
-    conditionValue: '{}', maxSupply: '',
+    conditionValue: '{}', maxIssuance: '',
   });
   const [busy, setBusy] = useState(false);
 
@@ -51,19 +59,24 @@ export default function AdminCardsPage() {
   if (!session) return null;
 
   const handleSubmit = async () => {
+    if (!activeFestivalId) {
+      alert('먼저 축제를 생성해주세요.');
+      return;
+    }
     setBusy(true);
     let condVal = {};
     try { condVal = JSON.parse(form.conditionValue); } catch { /* empty */ }
     await fetchApi('/api/photocards', {
       method: 'POST',
       body: JSON.stringify({
-        name: form.name, imageUrl: form.imageUrl, rarity: form.rarity,
+        festivalId: activeFestivalId,
+        name: form.name, description: form.description, imageUrl: form.imageUrl, rarity: form.rarity,
         conditionType: form.conditionType, conditionValue: condVal,
-        maxSupply: form.maxSupply ? Number(form.maxSupply) : null,
+        maxIssuance: form.maxIssuance ? Number(form.maxIssuance) : null,
       }),
     });
     setShowForm(false);
-    setForm({ name: '', imageUrl: '', rarity: 'COMMON', conditionType: 'MANUAL', conditionValue: '{}', maxSupply: '' });
+    setForm({ name: '', description: '', imageUrl: '', rarity: 'COMMON', conditionType: 'MANUAL', conditionValue: '{}', maxIssuance: '' });
     await refetch();
     setBusy(false);
   };
@@ -90,6 +103,10 @@ export default function AdminCardsPage() {
               <span className="text-sm font-medium">이미지 URL *</span>
               <input value={form.imageUrl} onChange={e => setForm(p => ({ ...p, imageUrl: e.target.value }))} className="mt-1 w-full border rounded-lg p-2 text-sm" />
             </label>
+            <label className="block sm:col-span-2">
+              <span className="text-sm font-medium">설명 *</span>
+              <textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} className="mt-1 w-full border rounded-lg p-2 text-sm" rows={2} />
+            </label>
             <label className="block">
               <span className="text-sm font-medium">희귀도</span>
               <select value={form.rarity} onChange={e => setForm(p => ({ ...p, rarity: e.target.value as PhotocardRarityType }))} className="mt-1 w-full border rounded-lg p-2 text-sm">
@@ -108,11 +125,11 @@ export default function AdminCardsPage() {
             </label>
             <label className="block">
               <span className="text-sm font-medium">최대 발급 수 (빈칸=무제한)</span>
-              <input type="number" value={form.maxSupply} onChange={e => setForm(p => ({ ...p, maxSupply: e.target.value }))} className="mt-1 w-full border rounded-lg p-2 text-sm" />
+              <input type="number" value={form.maxIssuance} onChange={e => setForm(p => ({ ...p, maxIssuance: e.target.value }))} className="mt-1 w-full border rounded-lg p-2 text-sm" />
             </label>
           </div>
           <div className="flex gap-2 mt-4">
-            <button onClick={handleSubmit} disabled={busy || !form.name || !form.imageUrl} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm disabled:opacity-50">등록</button>
+            <button onClick={handleSubmit} disabled={busy || !form.name || !form.imageUrl || !form.description} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm disabled:opacity-50">등록</button>
             <button onClick={() => setShowForm(false)} className="px-4 py-2 bg-gray-200 rounded-lg text-sm">취소</button>
           </div>
         </div>
@@ -129,7 +146,7 @@ export default function AdminCardsPage() {
               </div>
               <div className="text-xs text-gray-500 space-y-0.5">
                 <p>조건: {CONDITION_LABELS[c.conditionType]}</p>
-                <p>발급: {c._count.userPhotocards}장{c.maxSupply ? ` / ${c.maxSupply}장` : ''}</p>
+                <p>발급: {c._count.userPhotocards}장{c.maxIssuance ? ` / ${c.maxIssuance}장` : ''}</p>
                 <p className="flex items-center gap-1">
                   <span className={`w-1.5 h-1.5 rounded-full ${c.isActive ? 'bg-green-500' : 'bg-gray-400'}`} />
                   {c.isActive ? '활성' : '비활성'}

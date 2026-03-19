@@ -18,11 +18,19 @@ interface BoothForm {
   mapY: string;
 }
 
+interface FestivalItem {
+  id: string;
+  name: string;
+  isActive: boolean;
+}
+
 const emptyForm: BoothForm = { name: '', category: '', location: '', description: '', operatingHours: '', contactInfo: '', imageUrl: '', mapX: '', mapY: '' };
 
 export default function AdminBoothsPage() {
   const { session, loading: authLoading } = useAdminSession();
   const router = useRouter();
+  const { data: festivals } = useApiData<FestivalItem[]>(session ? '/api/festivals' : null);
+  const activeFestivalId = festivals?.find(f => f.isActive)?.id || festivals?.[0]?.id;
   const { data: booths, loading, refetch } = useApiData<BoothListItem[]>(session ? '/api/booths?pageSize=200' : null);
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState<BoothForm>(emptyForm);
@@ -46,8 +54,13 @@ export default function AdminBoothsPage() {
   };
 
   const handleSubmit = async () => {
+    if (!editing && !activeFestivalId) {
+      alert('먼저 축제를 생성해주세요.');
+      return;
+    }
     setBusy(true);
-    const body = { ...form, mapX: form.mapX ? Number(form.mapX) : null, mapY: form.mapY ? Number(form.mapY) : null };
+    const body: Record<string, unknown> = { ...form, mapX: form.mapX ? Number(form.mapX) : null, mapY: form.mapY ? Number(form.mapY) : null };
+    if (!editing) body.festivalId = activeFestivalId;
     if (editing) {
       await fetchApi(`/api/booths/${editing}`, { method: 'PATCH', body: JSON.stringify(body) });
     } else {

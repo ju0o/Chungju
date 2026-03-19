@@ -24,7 +24,7 @@ const ADMIN_MENU = [
   { href: '/admin/qr', icon: '📱', label: 'QR 관리', desc: 'QR 생성/재발급/비활성화/다운로드', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/stamps', icon: '🎫', label: '스탬프투어', desc: '캠페인 생성, 정책 설정', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/reviews', icon: '💬', label: '후기 관리', desc: '후기 검수/승인/숨김/삭제', roles: ['SUPER_ADMIN', 'ADMIN', 'MODERATOR'] },
-  { href: '/admin/photocards', icon: '🃏', label: '포토카드', desc: '포토카드 생성, 지급 조건 설정', roles: ['SUPER_ADMIN', 'ADMIN'] },
+  { href: '/admin/cards', icon: '🃏', label: '포토카드', desc: '포토카드 생성, 지급 조건 설정', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/rewards', icon: '🎁', label: '보상 관리', desc: '보상 조건, 수량 관리', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/users', icon: '👥', label: '참여 현황', desc: '사용자별 참여도 조회', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { href: '/admin/logs', icon: '📋', label: '감사로그', desc: '시스템 활동 기록', roles: ['SUPER_ADMIN', 'ADMIN'] },

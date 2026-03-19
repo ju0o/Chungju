@@ -16,9 +16,17 @@ interface Campaign {
   _count: { stampScans: number; userProgress: number };
 }
 
+interface FestivalItem {
+  id: string;
+  name: string;
+  isActive: boolean;
+}
+
 export default function AdminStampsPage() {
   const { session, loading: authLoading } = useAdminSession();
   const router = useRouter();
+  const { data: festivals } = useApiData<FestivalItem[]>(session ? '/api/festivals' : null);
+  const activeFestivalId = festivals?.find(f => f.isActive)?.id || festivals?.[0]?.id;
   const { data: campaigns, loading, refetch } = useApiData<Campaign[]>(session ? '/api/stamps/campaigns' : null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ name: '', description: '', requiredStamps: '5', startDate: '', endDate: '' });
@@ -30,15 +38,24 @@ export default function AdminStampsPage() {
   if (!session) return null;
 
   const handleSubmit = async () => {
+    if (!activeFestivalId) {
+      alert('먼저 축제를 생성해주세요.');
+      return;
+    }
+    if (!form.startDate || !form.endDate) {
+      alert('시작일과 종료일을 입력해주세요.');
+      return;
+    }
     setBusy(true);
     await fetchApi('/api/stamps/campaigns', {
       method: 'POST',
       body: JSON.stringify({
+        festivalId: activeFestivalId,
         name: form.name,
         description: form.description,
         requiredStamps: Number(form.requiredStamps),
-        startDate: form.startDate || null,
-        endDate: form.endDate || null,
+        startDate: form.startDate,
+        endDate: form.endDate,
       }),
     });
     setShowForm(false);
