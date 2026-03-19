@@ -8,6 +8,8 @@ import { PaperLabel } from "@/components/CollageOrnaments";
 import { DdayCounter } from "@/components/DdayCounter";
 import { FeaturedMomentsSection } from "@/components/FeaturedMomentsSection";
 import { FestivalIntroCard } from "@/components/FestivalIntroCard";
+import { FestivalProgressBar } from "@/components/FestivalProgressBar";
+import { WeatherWidget } from "@/components/WeatherWidget";
 import { HeroSection } from "@/components/HeroSection";
 import { InteractiveFestivalMap } from "@/components/InteractiveFestivalMap";
 import { LiveVisitorCounter } from "@/components/LiveVisitorCounter";
@@ -33,6 +35,10 @@ export default async function HomePage() {
       <div className="flex flex-wrap items-center gap-3">
         <LiveVisitorCounter />
         <DdayCounter />
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <WeatherWidget />
+        <FestivalProgressBar />
       </div>
       {isArchive ? <ArchiveModeBanner message={settings.archiveNotice} /> : null}
       <section className="section-card paper-stack soft-pattern rounded-[1.75rem] p-5">

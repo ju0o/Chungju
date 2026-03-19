@@ -2,9 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { requireAdmin, logAudit } from '@/lib/auth';
 
-// GET: 공지 목록 (공개)
-export async function GET() {
+// GET: 공지 목록 (공개, all=true면 전체)
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const showAll = searchParams.get('all') === 'true';
+
+    if (showAll) {
+      const announcements = await prisma.announcement.findMany({
+        orderBy: [{ priority: 'desc' }, { createdAt: 'desc' }],
+      });
+      return NextResponse.json(announcements);
+    }
+
     const now = new Date();
     const announcements = await prisma.announcement.findMany({
       where: {

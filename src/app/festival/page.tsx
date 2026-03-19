@@ -59,6 +59,8 @@ export default async function FestivalPage() {
           { href: '/photobooth', icon: '📸', label: '포토부스' },
           { href: '/share-card', icon: '🎨', label: '공유 카드' },
           { href: '/leaderboard', icon: '🏆', label: '랭킹' },
+          { href: '/certificate', icon: '📜', label: '인증서' },
+          { href: '/notices', icon: '📋', label: '공지' },
           { href: '/my', icon: '👤', label: '마이페이지' },
         ].map((item) => (
           <Link key={item.href} href={item.href} className="section-card flex flex-col items-center gap-2 rounded-2xl p-4 text-center transition-transform hover:scale-[1.02]">

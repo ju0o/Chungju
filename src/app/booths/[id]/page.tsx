@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { BoothReviewSection } from '@/components/booth/BoothReviewSection';
 import { FavoriteButton } from '@/components/FavoriteButton';
+import { BoothRecommendation } from '@/components/BoothRecommendation';
 
 export const dynamic = 'force-dynamic';
 
@@ -89,6 +90,9 @@ export default async function BoothDetailPage({ params }: { params: Promise<{ id
         imageUrls: Array.isArray(r.imageUrls) ? r.imageUrls as string[] : [],
         createdAt: r.createdAt.toISOString(),
       }))} />
+
+      {/* 부스 추천 */}
+      <BoothRecommendation currentBoothId={booth.id} category={booth.category} />
     </main>
   );
 }
