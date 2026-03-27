@@ -303,7 +303,7 @@ export const DEFAULT_EVENT_SETTINGS: EventSettings = {
       id: "booth-8",
       name: "황주영",
       authorName: "황주영",
-      subtitle: "시집",
+      subtitle: "독립출판물",
       description:
         "저는 제가 쓰는 글들을 끄적끄적이라고 합니다. 끄적이는 글들이 모여 하나의 문장이 되고, 그 문장이 독자들에게 소중한 순간이 되었으면 좋겠습니다.",
       bookTitle: "어제와 다른 내가 되어",
@@ -329,7 +329,7 @@ export const DEFAULT_EVENT_SETTINGS: EventSettings = {
       subtitle: "시집",
       description: "상실 이후에도 마르지 않는 마음의 시간을 시로 기록합니다.",
       bookTitle: "나,비",
-      imageUrl: "/books/나,비.jpg",
+      imageUrl: "/books/나비.jpg",
       bookDescription:
         "나, 비는 상실 이후에도 쉽게 마르지 않는 마음을 기록한 시집입니다. 날아간 사람과 그 자리에 남은 사람 사이, 그 틈에서 오래 머문 감정의 시간을 담았습니다.",
       quote: "상실에 의한 그리움을 담았습니다.",
@@ -349,7 +349,7 @@ export const DEFAULT_EVENT_SETTINGS: EventSettings = {
       id: "booth-10",
       name: "신유진",
       authorName: "신유진",
-      subtitle: "시집",
+      subtitle: "독립출판물",
       description: "열아홉의 치열한 감정과 성장의 흔적을 시선으로 남깁니다.",
       bookTitle: "별을끄다",
       imageUrl: "/books/별을끄다.jpg",

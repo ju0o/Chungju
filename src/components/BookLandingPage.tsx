@@ -15,7 +15,7 @@ const COVER_FALLBACK_BY_TITLE: Record<string, string> = {
   "오늘도덕분에숨을쉽니다": "/books/오늘도 덕분에 숨을 쉽니다.jpg",
   "필터교체가필요합니다": "/books/필터교체가필요합니다.jpg",
   "어제와다른내가되어": "/books/어제와 다른 내가 되어.jpg",
-  "나비": "/books/나,비.jpg",
+  "나비": "/books/나비.jpg",
   "별을끄다": "/books/별을끄다.jpg",
 };
 

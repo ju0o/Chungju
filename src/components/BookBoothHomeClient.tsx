@@ -64,7 +64,7 @@ const COVER_FALLBACK_BY_TITLE: Record<string, string> = {
   "오늘도덕분에숨을쉽니다": "/books/오늘도 덕분에 숨을 쉽니다.jpg",
   "필터교체가필요합니다": "/books/필터교체가필요합니다.jpg",
   "어제와다른내가되어": "/books/어제와 다른 내가 되어.jpg",
-  "나비": "/books/나,비.jpg",
+  "나비": "/books/나비.jpg",
   "별을끄다": "/books/별을끄다.jpg",
 };
 
@@ -105,10 +105,11 @@ function shorten(text: string, max = 84) {
   return `${clean.slice(0, max).trimEnd()}...`;
 }
 
-function getGenreBadge(booth: BoothItem): "시집" | "에세이" | "산문집" {
-  const source = `${booth.subtitle} ${booth.participationType} ${booth.bookDescription ?? ""}`.toLowerCase();
-  if (source.includes("시")) return "시집";
-  if (source.includes("산문")) return "산문집";
+function getGenreBadge(booth: BoothItem): "독립출판물" | "시집" | "에세이" | "산문집" {
+  const title = normalizeTitle(booth.bookTitle);
+  if (title === "나비" || title === "별을끄다") return "독립출판물";
+  if (title === "어제와다른내가되어") return "시집";
+  if (title === "필터교체가필요합니다") return "산문집";
   return "에세이";
 }
 
@@ -126,6 +127,7 @@ function getMoodTags(booth: BoothItem): string[] {
 function aiCurationLine(booth: BoothItem) {
   const genre = getGenreBadge(booth);
   const tags = getMoodTags(booth);
+  if (genre === "독립출판물") return `작가의 고유한 문체와 감정을 바로 만날 수 있는 ${tags[0]} 독립출판물입니다.`;
   if (genre === "시집") return `감정의 결을 천천히 읽고 싶은 분께 맞는 ${tags[0]} 시집입니다.`;
   if (genre === "산문집") return `생각이 많아진 날, 현실을 또렷하게 바라보고 싶은 분께 추천합니다.`;
   return `${tags[0]}이 필요한 날, 짧게 읽어도 오래 남는 에세이입니다.`;

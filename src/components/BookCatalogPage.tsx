@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { inferBookGenre, resolveBookCover } from "@/lib/book-utils";
 import { EventSettings } from "@/lib/types";
 
-const ORDERED_GENRES = ["시집", "산문집", "에세이"] as const;
+const ORDERED_GENRES = ["독립출판물", "시집", "산문집", "에세이"] as const;
 type GenreFilter = "전체" | (typeof ORDERED_GENRES)[number];
 type TimeSlot = "오전" | "오후";
 
@@ -47,6 +47,7 @@ export function BookCatalogPage({ settings }: { settings: EventSettings }) {
             if (book.genre === "에세이") s += 38;
             if (book.genre === "산문집") s += 24;
             if (book.genre === "시집") s += 12;
+            if (book.genre === "독립출판물") s += 16;
             if (includesAny(book.source, ["하루", "루틴", "위로", "회복", "시작"])) s += 22;
             if (book.stock >= 5) s += 12;
             if (isFeatured) s += 14;
@@ -56,6 +57,7 @@ export function BookCatalogPage({ settings }: { settings: EventSettings }) {
           if (book.genre === "시집") s += 38;
           if (book.genre === "산문집") s += 26;
           if (book.genre === "에세이") s += 14;
+          if (book.genre === "독립출판물") s += 32;
           if (includesAny(book.source, ["감정", "사랑", "그리움", "별", "밤", "성찰"])) s += 24;
           if (book.stock > 0 && book.stock <= 3) s += 10;
           if (isFeatured) s += 10;
@@ -193,8 +195,8 @@ export function BookCatalogPage({ settings }: { settings: EventSettings }) {
         </div>
         <p className="mt-1 text-[11px] text-[var(--foreground-soft)]">
           {timeSlot === "오전"
-            ? "오전 기준: 에세이/산문 우선, 하루 시작·위로 키워드, 재고 여유 도서 가중"
-            : "오후 기준: 시집/산문 우선, 감정·성찰 키워드, 품절 임박 도서 가중"}
+            ? "오전 기준: 에세이/산문 우선, 독립출판물 보조 추천, 하루 시작·위로 키워드 가중"
+            : "오후 기준: 시집/독립출판물 우선, 감정·성찰 키워드, 품절 임박 도서 가중"}
         </p>
         <div className="mt-2 grid gap-2 sm:grid-cols-3">
           {timePicks.map((book) => (
