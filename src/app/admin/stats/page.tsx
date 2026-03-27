@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAdminSession, useApiData } from '@/hooks/useApi';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { AdminQuickSidebar } from '@/components/admin/AdminQuickSidebar';
 
 interface EnhancedStats {
   totalUsers: number;
@@ -24,6 +25,7 @@ interface EnhancedStats {
 export default function EnhancedStatsPage() {
   const { session, loading: authLoading } = useAdminSession();
   const router = useRouter();
+  const pathname = usePathname();
   const { data: stats, loading } = useApiData<EnhancedStats>(session ? '/api/stats/enhanced' : null);
 
   useEffect(() => {
@@ -33,15 +35,17 @@ export default function EnhancedStatsPage() {
   if (authLoading || !session) return null;
 
   return (
-    <main className="min-h-screen bg-[var(--paper)] p-4 md:p-8">
-      <div className="mx-auto max-w-4xl grid gap-6">
-        <div>
-          <Link href="/admin/dashboard" className="text-sm text-[var(--foreground-soft)] hover:underline">← 대시보드</Link>
-          <h1 className="text-2xl font-bold mt-1">📊 상세 통계</h1>
-          <p className="text-sm text-[var(--foreground-soft)] mt-1">
-            실시간 접속자: <span className="font-bold text-green-600">{stats?.activeNow ?? '-'}명</span>
-          </p>
-        </div>
+    <main className="min-h-screen bg-[#f3f4f6] p-4 md:p-6">
+      <div className="mx-auto grid max-w-[1400px] gap-4 lg:grid-cols-[260px,1fr]">
+        <AdminQuickSidebar pathname={pathname} />
+        <section className="grid gap-4">
+          <div className="section-card rounded-2xl p-5">
+            <Link href="/admin/dashboard" className="text-sm text-[var(--foreground-soft)] hover:underline">← 대시보드</Link>
+            <h1 className="text-2xl font-bold mt-1">상세 통계</h1>
+            <p className="text-sm text-[var(--foreground-soft)] mt-1">
+              실시간 접속자: <span className="font-bold text-green-600">{stats?.activeNow ?? '-'}명</span>
+            </p>
+          </div>
 
         {loading ? (
           <div className="text-center py-12 text-sm text-[var(--foreground-soft)]">통계를 불러오는 중...</div>
@@ -176,6 +180,7 @@ export default function EnhancedStatsPage() {
             )}
           </>
         )}
+        </section>
       </div>
     </main>
   );

@@ -19,14 +19,14 @@ export function InteractiveFestivalMap({ points, booths = [] }: { points: StampP
       <CollageOrnaments className="opacity-60" />
       <SectionHeader
         eyebrow="Festival Map"
-        title="머무는 동선"
-        description="포인트를 눌러 이곳이 어떤 공간인지, 여기서 무엇을 할 수 있는지, 다음 장면은 어디인지 확인하세요."
+        title="독서 부스 동선"
+        description="포인트를 눌러 참여 작가 부스 위치와 책 소개를 확인하세요."
       />
       <div className="mt-5 grid gap-4">
         <div className="flex flex-wrap gap-2">
-          <PaperLabel text="꽃시장" tone="petal" />
-          <PaperLabel text="공원 산책길" tone="leaf" />
-          <PaperLabel text="QR 포인트" />
+          <PaperLabel text="작가 부스" tone="petal" />
+          <PaperLabel text="독서 라운지" tone="leaf" />
+          <PaperLabel text="안내 포인트" />
           <PaperLabel text="부스 터치 상세 모달" />
         </div>
         <div className="relative h-80 overflow-hidden rounded-[1.6rem] border border-[var(--line)] bg-[#f6f0e7] shadow-[var(--shadow-soft)]">
@@ -44,7 +44,7 @@ export function InteractiveFestivalMap({ points, booths = [] }: { points: StampP
                   setModalOpen(false);
                 }
               }}
-              className={`absolute flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/90 text-xs font-semibold text-white shadow-lg transition ${active?.id === point.id ? "scale-110 bg-[var(--accent-strong)]" : point.pointType === "booth" ? "bg-[var(--leaf-deep)]" : "bg-[rgba(46,42,35,0.88)]"}`}
+              className={`absolute flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--line)] text-xs font-semibold text-[var(--foreground)] shadow-lg transition ${active?.id === point.id ? "scale-110 bg-[rgba(222,133,101,0.38)]" : point.pointType === "booth" ? "bg-[rgba(123,151,117,0.34)]" : "bg-[rgba(255,251,245,0.96)]"}`}
               style={{ left: point.x, top: point.y }}
               aria-label={`${point.title} 포인트 열기`}
             >
@@ -54,7 +54,7 @@ export function InteractiveFestivalMap({ points, booths = [] }: { points: StampP
         </div>
         {active ? <MapPointSheet point={active} onOpenBooth={activeBooth ? () => setModalOpen(true) : undefined} /> : null}
       </div>
-      {modalOpen && active && activeBooth ? <BoothDetailModal booth={activeBooth} point={active} onClose={() => setModalOpen(false)} /> : null}
+      {modalOpen && activeBooth ? <BoothDetailModal booth={activeBooth} onClose={() => setModalOpen(false)} /> : null}
     </section>
   );
 }

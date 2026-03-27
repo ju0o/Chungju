@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { PaperLabel } from "@/components/CollageOrnaments";
 import { Download, Share2 } from "lucide-react";
 
@@ -59,7 +60,7 @@ export default function ShareCardPage() {
     ctx.fillStyle = theme.text;
     ctx.font = "bold 24px sans-serif";
     ctx.textAlign = "left";
-    const lines = wrapText(ctx, message || "살아있던 적이 없는 꽃을 팝니다", w - 96, 24);
+    const lines = wrapText(ctx, message || "살아있던 적이 없는 꽃을 팝니다", w - 96);
     let y = 260;
     for (const line of lines) {
       ctx.fillText(`"${line}"`, 48, y);
@@ -165,7 +166,7 @@ export default function ShareCardPage() {
       {/* 미리보기 */}
       {generated && (
         <div className="section-card rounded-[1.75rem] overflow-hidden">
-          <img src={generated} alt="축제 카드" className="w-full" />
+          <Image src={generated} alt="축제 카드" width={600} height={800} className="w-full" unoptimized />
           <div className="grid grid-cols-2 gap-2 p-4">
             <button onClick={download} className="festival-button festival-button--paper flex items-center justify-center gap-2 text-sm">
               <Download size={16} /> 저장
@@ -182,7 +183,7 @@ export default function ShareCardPage() {
   );
 }
 
-function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number, fontSize: number): string[] {
+function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
   const lines: string[] = [];
   let line = "";
   for (const char of text) {

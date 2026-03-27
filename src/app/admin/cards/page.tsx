@@ -2,6 +2,7 @@
 
 import { useAdminSession, useApiData, fetchApi } from '@/hooks/useApi';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import type { PhotocardRarityType, PhotocardConditionTypeValue } from '@/lib/domain-types';
 
@@ -138,7 +139,11 @@ export default function AdminCardsPage() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {cards?.map(c => (
           <div key={c.id} className="border rounded-xl overflow-hidden bg-white shadow-sm">
-            {c.imageUrl && <img src={c.imageUrl} alt={c.name} className="w-full h-40 object-cover" />}
+            {c.imageUrl && (
+              <div className="relative h-40 w-full">
+                <Image src={c.imageUrl} alt={c.name} fill className="object-cover" unoptimized />
+              </div>
+            )}
             <div className="p-3">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="font-semibold text-sm truncate">{c.name}</h3>

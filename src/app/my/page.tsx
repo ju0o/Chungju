@@ -27,7 +27,7 @@ interface MyPageData {
 }
 
 export default function MyPage() {
-  const { session, updateNickname } = useUserSession();
+  const { updateNickname } = useUserSession();
   const { data, loading, refetch } = useApiData<MyPageData>('/api/me');
   const [editing, setEditing] = useState(false);
   const [nicknameInput, setNicknameInput] = useState('');
@@ -66,7 +66,7 @@ export default function MyPage() {
       {/* 프로필 */}
       <section className="section-card rounded-[1.75rem] p-5">
         <div className="flex items-center gap-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[var(--accent-coral)] to-[var(--accent-petal)] text-2xl text-white">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[var(--accent-coral)]/35 to-[var(--accent-petal)]/45 text-2xl text-[var(--foreground)]">
             👤
           </div>
           <div className="flex-1">
@@ -99,20 +99,22 @@ export default function MyPage() {
 
       {/* 요약 */}
       <section className="grid grid-cols-3 gap-3">
-        <Link href="/stamp/status" className="section-card flex flex-col items-center gap-1 rounded-2xl p-4 text-center">
-          <span className="text-2xl">🎫</span>
-          <span className="text-lg font-bold text-[var(--accent-coral)]">{data.stampProgress.reduce((sum, p) => sum + p.totalStamps, 0)}</span>
-          <span className="text-xs text-[var(--foreground-soft)]">스탬프</span>
+        <Link href="/favorites" className="section-card flex flex-col items-center gap-1 rounded-2xl p-4 text-center">
+          <span className="text-2xl">❤️</span>
+          <span className="text-lg font-bold text-[var(--accent-coral)]">
+            {data.reviews.length > 0 ? new Set(data.reviews.map((review) => review.booth.name)).size : 0}
+          </span>
+          <span className="text-xs text-[var(--foreground-soft)]">관심 부스</span>
         </Link>
         <div className="section-card flex flex-col items-center gap-1 rounded-2xl p-4 text-center">
           <span className="text-2xl">💬</span>
           <span className="text-lg font-bold text-[var(--accent-leaf)]">{data.reviews.length}</span>
           <span className="text-xs text-[var(--foreground-soft)]">후기</span>
         </div>
-        <Link href="/my/photocards" className="section-card flex flex-col items-center gap-1 rounded-2xl p-4 text-center">
-          <span className="text-2xl">🃏</span>
-          <span className="text-lg font-bold text-[var(--accent-sky)]">{data.photocards.length}</span>
-          <span className="text-xs text-[var(--foreground-soft)]">포토카드</span>
+        <Link href="/booths" className="section-card flex flex-col items-center gap-1 rounded-2xl p-4 text-center">
+          <span className="text-2xl">📚</span>
+          <span className="text-lg font-bold text-[var(--accent-sky)]">{data.reviews.length}</span>
+          <span className="text-xs text-[var(--foreground-soft)]">참여 기록</span>
         </Link>
       </section>
 
@@ -140,25 +142,6 @@ export default function MyPage() {
         </section>
       )}
 
-      {/* 포토카드 미리보기 */}
-      {data.photocards.length > 0 && (
-        <section className="section-card rounded-[1.75rem] p-5">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="font-semibold">내 포토카드</h2>
-            <Link href="/my/photocards" className="text-xs text-[var(--accent-coral)]">전체보기 →</Link>
-          </div>
-          <div className="flex gap-3 overflow-x-auto pb-1">
-            {data.photocards.slice(0, 6).map((item) => (
-              <div key={item.id} className="flex-shrink-0 w-24">
-                <div className="aspect-[3/4] overflow-hidden rounded-xl">
-                  <img src={item.photocard.imageUrl} alt={item.photocard.name} className="h-full w-full object-cover" />
-                </div>
-                <p className="mt-1 truncate text-xs font-medium">{item.photocard.name}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
     </main>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface WeatherInfo {
   temp: number;
@@ -51,11 +51,7 @@ function getSeasonalWeather(): WeatherInfo {
 }
 
 export function WeatherWidget() {
-  const [weather, setWeather] = useState<WeatherInfo | null>(null);
-
-  useEffect(() => {
-    setWeather(getSeasonalWeather());
-  }, []);
+  const [weather] = useState<WeatherInfo>(() => getSeasonalWeather());
 
   if (!weather) return null;
 

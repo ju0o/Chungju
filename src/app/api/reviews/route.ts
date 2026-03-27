@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { getUserSession, ensureUserSession, requireAdmin, logAudit } from '@/lib/auth';
+import { ensureUserSession, requireAdmin } from '@/lib/auth';
 
 // 후기 목록 조회
 export async function GET(request: NextRequest) {
@@ -14,10 +14,8 @@ export async function GET(request: NextRequest) {
     const where: Record<string, unknown> = {};
 
     // 관리자는 모든 상태 조회 가능
-    let isAdmin = false;
     try {
       await requireAdmin();
-      isAdmin = true;
       if (status) where.status = status;
     } catch {
       where.status = 'APPROVED';

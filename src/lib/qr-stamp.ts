@@ -144,7 +144,6 @@ export async function processQrScan(
     },
   });
 
-  const newTotal = progress.totalStamps + (progress.totalStamps === 1 ? 0 : 0); // upsert에서 이미 증가됨
   const actualTotal = await prisma.stampScan.count({
     where: { userId, stampCampaignId: campaign.id },
   });

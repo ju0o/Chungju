@@ -200,10 +200,22 @@ export type VisitorInterestState = {
   savedProgramIds: string[];
 };
 
+export type PublishingConsultation = {
+  id: string;
+  activityName: string;
+  hasManuscript: "유" | "무";
+  genre: string;
+  publishFormat: "전자책" | "POD";
+  contact: string;
+  note?: string;
+  createdAt: string;
+};
+
 export type EventSettings = {
   eventName: string;
   heroTitle: string;
   heroDescription: string;
+  featuredBookBoothId?: string;
   eventDate: string;
   eventPlace: string;
   operationHours: string;

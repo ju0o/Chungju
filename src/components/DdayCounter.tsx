@@ -2,11 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-interface EventSettings {
-  eventDate: string;
-  startDate?: string;
-}
-
 export function DdayCounter({ targetDate }: { targetDate?: string }) {
   const [diff, setDiff] = useState<{ days: number; hours: number; mins: number; status: 'before' | 'during' | 'after' }>({
     days: 0, hours: 0, mins: 0, status: 'before',

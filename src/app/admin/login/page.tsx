@@ -8,6 +8,7 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [entryCode, setEntryCode] = useState("");
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,10 +30,14 @@ export default function AdminLoginPage() {
               setLoading(true);
               setError("");
               try {
+                const payload =
+                  entryCode.trim().length > 0
+                    ? { entryCode: entryCode.trim() }
+                    : { email, password };
                 const res = await fetch("/api/auth/admin/login", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ email, password }),
+                  body: JSON.stringify(payload),
                 });
                 const data = await res.json();
                 if (data.success) {
@@ -75,12 +80,25 @@ export default function AdminLoginPage() {
                 />
                 <button
                   type="button"
-                  onClick={() => setVisible((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"
-                >
-                  {visible ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
+                onClick={() => setVisible((v) => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"
+              >
+                {visible ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
+            <div className="rounded-xl border border-[var(--line)] bg-white/65 p-3">
+              <label htmlFor="entry-code" className="mb-1 block text-sm font-medium">입장 코드</label>
+              <input
+                id="entry-code"
+                type="password"
+                className="festival-input w-full"
+                placeholder="코드로 바로 입장"
+                value={entryCode}
+                onChange={(e) => setEntryCode(e.target.value)}
+                autoComplete="one-time-code"
+              />
+              <p className="mt-1 text-[11px] text-[var(--foreground-soft)]">입장 코드가 입력되면 이메일/비밀번호 대신 코드 로그인으로 처리됩니다.</p>
             </div>
             <button disabled={loading} className="festival-button primary mt-2 w-full rounded-xl py-3 text-sm font-semibold">
               <Shield size={18} />

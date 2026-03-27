@@ -5,7 +5,7 @@ import { hasServerSupabase, supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function GET() {
   if (hasServerSupabase() && supabaseAdmin) {
-    const { data } = await supabaseAdmin.from("event_settings").select("*").limit(1).maybeSingle();
+    const { data } = await supabaseAdmin.from("site_settings").select("*").limit(1).maybeSingle();
     if (data) return NextResponse.json(data);
   }
   return NextResponse.json(memoryStore.settings);
@@ -18,7 +18,7 @@ export async function PATCH(request: Request) {
   const before = memoryStore.settings;
   if (hasServerSupabase() && supabaseAdmin) {
     const { data, error } = await supabaseAdmin
-      .from("event_settings")
+      .from("site_settings")
       .upsert({ id: "default", ...memoryStore.settings, ...payload })
       .select()
       .single();

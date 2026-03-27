@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { BoothReviewSection } from '@/components/booth/BoothReviewSection';
 import { FavoriteButton } from '@/components/FavoriteButton';
@@ -14,7 +15,6 @@ export default async function BoothDetailPage({ params }: { params: Promise<{ id
     where: { id },
     include: {
       festival: { select: { id: true, name: true } },
-      qrCode: { select: { isActive: true } },
       reviews: {
         where: { status: 'APPROVED' },
         include: { user: { select: { nickname: true } } },
@@ -35,13 +35,18 @@ export default async function BoothDetailPage({ params }: { params: Promise<{ id
 
   const avgRating = ratingResult._avg.rating || 0;
   const reviewCount = ratingResult._count;
+  const metadata = booth.metadata && typeof booth.metadata === 'object' && !Array.isArray(booth.metadata)
+    ? (booth.metadata as Record<string, unknown>)
+    : {};
+  const currentAuthorName = typeof metadata.authorName === 'string' ? metadata.authorName : '';
+  const currentBookTitle = typeof metadata.bookTitle === 'string' ? metadata.bookTitle : '';
 
   return (
     <main className="app-shell grid gap-4">
       {/* 부스 이미지/헤더 */}
       <section className="relative overflow-hidden rounded-b-[2rem] bg-gradient-to-b from-[var(--accent-leaf)]/20 to-[var(--paper)]">
         {booth.imageUrl ? (
-          <img src={booth.imageUrl} alt={booth.name} className="h-48 w-full object-cover" />
+          <Image src={booth.imageUrl} alt={booth.name} width={960} height={320} className="h-48 w-full object-cover" unoptimized />
         ) : (
           <div className="flex h-48 items-center justify-center bg-gradient-to-br from-[var(--accent-coral)]/20 to-[var(--accent-petal)]/30 text-6xl">🏪</div>
         )}
@@ -49,9 +54,6 @@ export default async function BoothDetailPage({ params }: { params: Promise<{ id
           <Link href="/booths" className="mb-2 inline-block text-xs text-[var(--accent-coral)]">← 부스 목록으로</Link>
           <div className="flex items-center gap-2">
             <span className="rounded-full bg-[var(--accent-leaf)]/15 px-2 py-0.5 text-xs text-[var(--accent-leaf)]">{booth.category}</span>
-            {booth.qrCode?.isActive && (
-              <span className="rounded-full bg-[var(--accent-coral)]/15 px-2 py-0.5 text-xs text-[var(--accent-coral)]">🎫 스탬프 가능</span>
-            )}
             <FavoriteButton boothId={booth.id} />
           </div>
           <h1 className="section-title mt-2 text-xl font-bold">{booth.name}</h1>
@@ -92,7 +94,14 @@ export default async function BoothDetailPage({ params }: { params: Promise<{ id
       }))} />
 
       {/* 부스 추천 */}
-      <BoothRecommendation currentBoothId={booth.id} category={booth.category} />
+      <BoothRecommendation
+        currentBoothId={booth.id}
+        category={booth.category}
+        currentName={booth.name}
+        currentDescription={booth.description}
+        currentAuthorName={currentAuthorName}
+        currentBookTitle={currentBookTitle}
+      />
     </main>
   );
 }

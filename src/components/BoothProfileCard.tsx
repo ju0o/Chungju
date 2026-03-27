@@ -83,12 +83,12 @@ export function BoothProfileCard({ booth }: { booth: BoothProfile }) {
             </div>
             <div className="rounded-[1.3rem] border border-[var(--line)] bg-white/70 p-4">
               <p className="text-xs uppercase tracking-[0.14em] text-[var(--foreground-soft)]">작가의 말</p>
-              <p className="body-copy mt-3 text-sm text-[var(--foreground-soft)]">{booth.authorMessage ?? booth.description}</p>
+              <p className="body-copy mt-3 whitespace-pre-line text-sm text-[var(--foreground-soft)]">{booth.authorMessage ?? booth.description}</p>
             </div>
             <div className="grid gap-3 text-sm text-[var(--foreground)]">
               <div className="rounded-[1.25rem] border border-[var(--line)] bg-[rgba(255,251,245,0.78)] p-4">
                 <p className="flex items-center gap-2 font-medium"><MessageCircle size={14} /> 책 소개</p>
-                <p className="body-copy mt-2 text-[var(--foreground-soft)]">{booth.bookDescription ?? booth.description}</p>
+                <p className="body-copy mt-2 whitespace-pre-line text-[var(--foreground-soft)]">{booth.bookDescription ?? booth.description}</p>
               </div>
               <p className="flex items-center gap-2"><Pin size={14} /> 위탁 여부: {booth.isConsignment ? "예" : "아니오"}</p>
             </div>

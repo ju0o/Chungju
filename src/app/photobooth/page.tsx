@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect } from "react";
+import Image from "next/image";
 import { PaperLabel } from "@/components/CollageOrnaments";
 import { Camera, Download, RotateCcw } from "lucide-react";
 
@@ -139,7 +140,7 @@ export default function PhotoboothPage() {
       <div className="section-card rounded-[1.75rem] overflow-hidden">
         {photo ? (
           <div className="relative">
-            <img src={photo} alt="촬영된 사진" className="w-full" />
+            <Image src={photo} alt="촬영된 사진" width={720} height={720} className="w-full" unoptimized />
             <div className="grid grid-cols-2 gap-2 p-4">
               <button onClick={reset} className="festival-button festival-button--paper flex items-center justify-center gap-2 text-sm">
                 <RotateCcw size={16} /> 다시 찍기

@@ -2,7 +2,9 @@
 
 import { useAdminSession, useApiData, fetchApi } from '@/hooks/useApi';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { AdminQuickSidebar } from '@/components/admin/AdminQuickSidebar';
 
 interface Festival {
   id: string;
@@ -22,6 +24,7 @@ interface Festival {
 export default function AdminFestivalPage() {
   const { session, loading: authLoading } = useAdminSession();
   const router = useRouter();
+  const pathname = usePathname();
   const { data: festivals, loading, refetch } = useApiData<Festival[]>(session ? '/api/festivals' : null);
   const [editing, setEditing] = useState<Festival | null>(null);
   const [saving, setSaving] = useState(false);
@@ -75,8 +78,10 @@ export default function AdminFestivalPage() {
   });
 
   return (
-    <main className="min-h-screen bg-[var(--paper)] p-4 md:p-8">
-      <div className="mx-auto max-w-4xl grid gap-6">
+    <main className="min-h-screen bg-[#f3f4f6] p-4 md:p-6">
+      <div className="mx-auto grid max-w-[1400px] gap-4 lg:grid-cols-[260px,1fr]">
+        <AdminQuickSidebar pathname={pathname} />
+        <div className="grid gap-6">
         <div className="flex items-center justify-between">
           <div>
             <button onClick={() => router.push('/admin/dashboard')} className="text-xs text-[var(--accent-coral)]">← 대시보드</button>
@@ -197,6 +202,7 @@ export default function AdminFestivalPage() {
             ))}
           </div>
         )}
+        </div>
       </div>
     </main>
   );

@@ -2,6 +2,7 @@
 
 import { Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { fetchApi } from '@/hooks/useApi';
 import type { ScanResult } from '@/lib/domain-types';
@@ -96,7 +97,7 @@ function ScanProcessor() {
           <div className="grid gap-3">
             {result.newPhotocards.map((card) => (
               <div key={card.id} className="flex items-center gap-3 rounded-xl border border-[var(--accent-petal)] bg-gradient-to-r from-[var(--accent-petal)]/10 to-transparent p-4">
-                <img src={card.imageUrl} alt={card.name} className="h-16 w-16 rounded-lg object-cover" />
+                <Image src={card.imageUrl} alt={card.name} width={64} height={64} className="h-16 w-16 rounded-lg object-cover" unoptimized />
                 <div>
                   <div className="font-semibold">{card.name}</div>
                   <div className="text-xs text-[var(--accent-coral)]">{card.rarity}</div>

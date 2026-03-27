@@ -3,15 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { BoothProfile, StampPoint } from "@/lib/types";
+import { BoothProfile } from "@/lib/types";
 
 export function BoothDetailModal({
   booth,
-  point,
   onClose,
 }: {
   booth: BoothProfile;
-  point?: StampPoint;
   onClose: () => void;
 }) {
   return (
@@ -39,25 +37,19 @@ export function BoothDetailModal({
             <div className="rounded-[1.2rem] border border-[var(--line)] bg-white/75 p-4">
               <p className="text-xs font-semibold tracking-[0.14em] text-[var(--foreground-soft)]">책 소개</p>
               <p className="mt-2 text-base font-semibold tracking-[-0.02em] text-[var(--foreground)]">{booth.bookTitle}</p>
-              <p className="body-copy mt-2 text-sm text-[var(--foreground-soft)]">{booth.bookDescription ?? booth.description}</p>
+              <p className="body-copy mt-2 whitespace-pre-line text-sm text-[var(--foreground-soft)]">{booth.bookDescription ?? booth.description}</p>
             </div>
             <div className="rounded-[1.2rem] border border-[var(--line)] bg-white/75 p-4">
               <p className="text-xs font-semibold tracking-[0.14em] text-[var(--foreground-soft)]">작가 소개</p>
-              <p className="body-copy mt-2 text-sm text-[var(--foreground-soft)]">{booth.authorMessage ?? booth.description}</p>
+              <p className="body-copy mt-2 whitespace-pre-line text-sm text-[var(--foreground-soft)]">{booth.authorMessage ?? booth.description}</p>
             </div>
             <div className="grid gap-1 text-sm text-[var(--foreground)]">
-              <p>부스 위치: {point?.location ?? booth.mapLabel ?? "관리자에서 설정 가능"}</p>
-              <p>QR 방문 인증: {point?.qrEnabled === false ? "사용 안 함" : "사용 가능"}</p>
+              <p>부스 위치: {booth.mapLabel ?? "관리자에서 설정 가능"}</p>
               <p>현장 참여 방식: {booth.participationType}</p>
             </div>
           </div>
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {point ? (
-            <Link href={`/stamp/${point.slug}`} className="festival-button festival-button--primary">
-              QR 방문 인증 페이지 열기
-            </Link>
-          ) : null}
           {booth.snsLink || booth.link ? (
             <Link href={booth.snsLink ?? booth.link ?? "#"} target="_blank" className="festival-button festival-button--paper">
               작가 링크 보기

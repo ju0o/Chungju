@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import type { ApiResponse } from '@/lib/domain-types';
+import { useCallback, useEffect, useState } from 'react';
 
 // API 호출 유틸
 async function fetchApi<T>(url: string, options?: RequestInit): Promise<T> {
@@ -87,7 +86,7 @@ export function useApiData<T>(url: string | null) {
   const [loading, setLoading] = useState(!!url);
   const [error, setError] = useState<string | null>(null);
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     if (!url) return;
     setLoading(true);
     try {
@@ -99,11 +98,11 @@ export function useApiData<T>(url: string | null) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [url]);
 
   useEffect(() => {
-    refetch();
-  }, [url]);
+    void refetch();
+  }, [refetch]);
 
   return { data, loading, error, refetch };
 }

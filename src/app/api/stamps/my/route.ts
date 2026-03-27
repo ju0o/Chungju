@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getUserSession } from '@/lib/auth';
 
 // 내 스탬프 현황 조회
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const userSession = await getUserSession();
     if (!userSession) {

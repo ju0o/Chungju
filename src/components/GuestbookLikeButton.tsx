@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Heart } from 'lucide-react';
 
 const STORAGE_KEY = 'festival-guestbook-likes';
@@ -18,18 +18,19 @@ function saveLikedIds(ids: Set<string>) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
 }
 
-export function GuestbookLikeButton({ entryId }: { entryId: string }) {
-  const [liked, setLiked] = useState(false);
-  const [count, setCount] = useState(0);
+function getLikeCount(entryId: string): number {
+  if (typeof window === 'undefined') return 0;
+  try {
+    const counts = JSON.parse(localStorage.getItem('festival-like-counts') || '{}');
+    return counts[entryId] || 0;
+  } catch {
+    return 0;
+  }
+}
 
-  useEffect(() => {
-    setLiked(getLikedIds().has(entryId));
-    // 좋아요 수는 localStorage에 간단하게 저장
-    try {
-      const counts = JSON.parse(localStorage.getItem('festival-like-counts') || '{}');
-      setCount(counts[entryId] || 0);
-    } catch { /* ignore */ }
-  }, [entryId]);
+export function GuestbookLikeButton({ entryId }: { entryId: string }) {
+  const [liked, setLiked] = useState(() => getLikedIds().has(entryId));
+  const [count, setCount] = useState(() => getLikeCount(entryId));
 
   const toggle = useCallback(() => {
     const ids = getLikedIds();

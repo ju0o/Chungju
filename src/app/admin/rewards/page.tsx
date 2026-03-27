@@ -2,6 +2,7 @@
 
 import { useAdminSession, useApiData, fetchApi } from '@/hooks/useApi';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 interface RewardItem {
@@ -91,7 +92,7 @@ export default function AdminRewardsPage() {
         {rewards?.map(r => (
           <div key={r.id} className="border rounded-xl p-4 bg-white shadow-sm">
             <div className="flex items-start gap-3">
-              {r.imageUrl && <img src={r.imageUrl} alt={r.name} className="w-16 h-16 rounded-lg object-cover" />}
+              {r.imageUrl && <Image src={r.imageUrl} alt={r.name} width={64} height={64} className="h-16 w-16 rounded-lg object-cover" unoptimized />}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <span className={`w-2 h-2 rounded-full ${r.isActive ? 'bg-green-500' : 'bg-gray-400'}`} />

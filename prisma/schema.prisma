@@ -241,6 +241,39 @@ model Review {
 }
 
 // ─────────────────────────────────────────────
+// 출판 상담 신청
+// ─────────────────────────────────────────────
+model PublishingConsultation {
+  id            String   @id @default(cuid())
+  activityName  String   @map("activity_name")
+  hasManuscript String   @map("has_manuscript")
+  genre         String
+  publishFormat String   @map("publish_format")
+  contact       String
+  note          String?  @db.Text
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@index([createdAt])
+  @@map("publishing_consultations")
+}
+
+model BookStockAlert {
+  id        String   @id @default(cuid())
+  boothId   String?  @map("booth_id")
+  bookTitle String   @map("book_title")
+  authorName String? @map("author_name")
+  contact   String
+  status    String   @default("PENDING")
+  note      String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([createdAt])
+  @@map("book_stock_alerts")
+}
+
+// ─────────────────────────────────────────────
 // 포토카드 (템플릿)
 // ─────────────────────────────────────────────
 enum PhotocardRarity {

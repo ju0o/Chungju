@@ -31,17 +31,17 @@ export default async function FestivalPage() {
   return (
     <main className="app-shell grid gap-4">
       {/* 히어로 */}
-      <section className="relative overflow-hidden rounded-b-[2rem] bg-gradient-to-b from-[var(--accent-coral)] to-[var(--accent-petal)] p-6 pb-8 text-white">
+      <section className="relative overflow-hidden rounded-b-[2rem] bg-gradient-to-b from-[var(--accent-coral)]/42 to-[var(--accent-petal)]/48 p-6 pb-8">
         {festival.heroImageUrl && (
           <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: `url(${festival.heroImageUrl})` }} />
         )}
         <div className="relative z-10">
-          <div className="mb-2 inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-medium backdrop-blur-sm">
+          <div className="mb-2 inline-block rounded-full border border-[var(--line)] bg-white/80 px-3 py-1 text-xs font-medium text-[var(--foreground)] backdrop-blur-sm">
             {isLive ? '🎉 진행 중' : festival.startDate > new Date() ? '📅 예정' : '📸 종료'}
           </div>
-          <h1 className="section-title text-2xl font-bold text-white">{festival.name}</h1>
-          <p className="body-copy mt-2 text-white/90">{festival.description}</p>
-          <div className="mt-4 grid gap-2 text-sm text-white/85">
+          <h1 className="section-title text-2xl font-bold text-[var(--foreground)]">{festival.name}</h1>
+          <p className="body-copy mt-2 text-[var(--foreground-soft)]">{festival.description}</p>
+          <div className="mt-4 grid gap-2 text-sm text-[var(--foreground-soft)]">
             <div>📍 {festival.location}</div>
             <div>📅 {new Date(festival.startDate).toLocaleDateString('ko-KR')} ~ {new Date(festival.endDate).toLocaleDateString('ko-KR')}</div>
             <div>🏪 {festival._count.booths}개 부스 참여</div>
@@ -53,13 +53,9 @@ export default async function FestivalPage() {
       <section className="grid grid-cols-4 gap-3 px-4">
         {[
           { href: '/booths', icon: '🏪', label: '부스 보기' },
-          { href: '/stamp', icon: '🎫', label: '스탬프 투어' },
-          { href: '/quiz', icon: '📝', label: '축제 퀴즈' },
-          { href: '/timeline', icon: '📋', label: '타임라인' },
-          { href: '/photobooth', icon: '📸', label: '포토부스' },
-          { href: '/share-card', icon: '🎨', label: '공유 카드' },
-          { href: '/leaderboard', icon: '🏆', label: '랭킹' },
-          { href: '/certificate', icon: '📜', label: '인증서' },
+          { href: '/reviews', icon: '💬', label: '후기 보기' },
+          { href: '/favorites', icon: '❤️', label: '찜한 책' },
+          { href: '/about', icon: '📚', label: '페이지 소개' },
           { href: '/notices', icon: '📋', label: '공지' },
           { href: '/my', icon: '👤', label: '마이페이지' },
         ].map((item) => (

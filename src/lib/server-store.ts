@@ -6,6 +6,7 @@ import {
   EventSettings,
   GeneratedCardSet,
   GuestbookEntry,
+  PublishingConsultation,
   MomentEntry,
   StampPoint,
 } from "@/lib/types";
@@ -21,6 +22,7 @@ export const memoryStore: {
   adminAccessCodes: AdminAccessCode[];
   adminSessions: Record<string, AdminSession>;
   adminAuditLogs: AdminAuditLog[];
+  publishingConsultations: PublishingConsultation[];
   visitStats: {
     totalPageViews: number;
     uniqueGuests: string[];
@@ -38,6 +40,7 @@ export const memoryStore: {
   adminAccessCodes: [],
   adminSessions: {},
   adminAuditLogs: [],
+  publishingConsultations: [],
   visitStats: {
     totalPageViews: 0,
     uniqueGuests: [],

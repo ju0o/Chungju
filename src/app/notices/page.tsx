@@ -43,7 +43,7 @@ export default function NoticesPage() {
           <Link href="/" className="text-xs text-[var(--foreground-soft)] underline">← 홈</Link>
         </div>
         <p className="body-copy mt-1 text-sm text-[var(--foreground-soft)]">
-          축제 관련 공지 및 안내사항을 확인하세요
+          작가 및 책 부스 관련 공지와 안내사항을 확인하세요
         </p>
       </section>
 

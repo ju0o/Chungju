@@ -4,9 +4,9 @@ import { requireAdmin, logAudit } from '@/lib/auth';
 import * as bcrypt from 'bcryptjs';
 
 // 관리자 목록 조회 (SUPER_ADMIN만)
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const admin = await requireAdmin(['SUPER_ADMIN']);
+    await requireAdmin(['SUPER_ADMIN']);
 
     const admins = await prisma.adminUser.findMany({
       select: {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { getUserSession, requireAdmin, logAudit } from '@/lib/auth';
+import { requireAdmin, logAudit } from '@/lib/auth';
 
 // 스탬프 캠페인 목록 조회
 export async function GET(request: NextRequest) {

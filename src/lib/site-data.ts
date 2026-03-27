@@ -3,6 +3,21 @@ import { memoryStore } from "@/lib/server-store";
 import { EventSettings, MomentEntry, StampPoint } from "@/lib/types";
 import { hasServerSupabase, supabaseAdmin } from "@/lib/supabase-admin";
 
+function mergeBooths(rawBooths: unknown): EventSettings["booths"] {
+  const booths = Array.isArray(rawBooths) ? (rawBooths as EventSettings["booths"]) : [];
+  const titleSet = new Set(booths.map((item) => item.bookTitle?.trim()).filter(Boolean));
+  const missing = DEFAULT_EVENT_SETTINGS.booths.filter((item) => !titleSet.has(item.bookTitle.trim()));
+  return [...booths, ...missing].sort((a, b) => a.order - b.order);
+}
+
+function mergeQuotes(rawQuotes: unknown): EventSettings["quotes"] {
+  const quotes = Array.isArray(rawQuotes) ? (rawQuotes as EventSettings["quotes"]) : [];
+  const quoteKey = (text: string, source?: string) => `${text.trim()}::${(source ?? "").trim()}`;
+  const keySet = new Set(quotes.map((item) => quoteKey(item.text, item.sourceBook)));
+  const missing = DEFAULT_EVENT_SETTINGS.quotes.filter((item) => !keySet.has(quoteKey(item.text, item.sourceBook)));
+  return [...quotes, ...missing];
+}
+
 export async function getSiteSettings(): Promise<EventSettings> {
   if (hasServerSupabase() && supabaseAdmin) {
     const { data } = await supabaseAdmin.from("site_settings").select("*").limit(1).maybeSingle();
@@ -10,6 +25,8 @@ export async function getSiteSettings(): Promise<EventSettings> {
       return {
         ...DEFAULT_EVENT_SETTINGS,
         ...data,
+        booths: mergeBooths(data.booths),
+        quotes: mergeQuotes(data.quotes),
       } as EventSettings;
     }
   }

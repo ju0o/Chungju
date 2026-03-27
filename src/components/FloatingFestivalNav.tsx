@@ -1,25 +1,25 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Heart, House, MapPinned, Share2, Star, User } from "lucide-react";
+import Link from "next/link";
+import { BookOpenText, Heart, House, Share2, SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/", label: "홈", icon: House },
-  { href: "/festival", label: "축제", icon: MapPinned },
-  { href: "/stamp/status", label: "스탬프", icon: Star },
-  { href: "/favorites", label: "찜", icon: Heart },
-  { href: "/my", label: "MY", icon: User },
+  { href: "/books", label: "책", icon: BookOpenText },
+  { href: "/discover", label: "탐색", icon: SlidersHorizontal },
+  { href: "/saved", label: "찜", icon: Heart },
 ];
 
 export function FloatingFestivalNav() {
   const pathname = usePathname();
+  if (!["/", "/books", "/discover", "/saved", "/reviews", "/consult"].includes(pathname)) return null;
 
   const handleShare = async () => {
     const shareData = {
-      title: "#8 율량마르쉐 애착꽃시장",
-      text: "살아있던 적이 없는 꽃을 팝니다 — 청주 애착꽃시장에 놀러오세요!",
+      title: "율량마르쉐#8 작가 및 책 부스",
+      text: "율량마르쉐#8 작가와 책 부스를 확인해보세요.",
       url: window.location.href,
     };
     if (navigator.share) {
@@ -34,7 +34,6 @@ export function FloatingFestivalNav() {
     <nav className="fixed inset-x-0 bottom-4 z-50 mx-auto flex max-w-md justify-center px-4 md:max-w-lg">
       <div className="flex w-full items-center justify-between rounded-[999px] border border-[var(--line)] bg-[rgba(255,250,244,0.84)] px-3 py-2 shadow-[0_16px_30px_rgba(84,66,50,0.12)] backdrop-blur">
         {items.map((item) => {
-          const active = item.href === "/" ? pathname === item.href : pathname.startsWith(item.href);
           const Icon = item.icon;
           return (
             <Link
@@ -42,7 +41,8 @@ export function FloatingFestivalNav() {
               href={item.href}
               className={cn(
                 "flex min-w-[3.2rem] flex-col items-center gap-1 rounded-full px-2 py-2 text-[11px] font-medium transition",
-                active ? "bg-[rgba(123,151,117,0.16)] text-[var(--leaf-deep)]" : "text-[var(--foreground-soft)]",
+                "text-[var(--foreground-soft)] hover:bg-[rgba(123,151,117,0.16)] hover:text-[var(--leaf-deep)]",
+                pathname === item.href ? "bg-[rgba(123,151,117,0.16)] text-[var(--leaf-deep)]" : "",
               )}
             >
               <Icon size={18} />

@@ -34,14 +34,14 @@ function AuthorFeatureCard({ booth }: { booth: BoothProfile }) {
               BOOK
             </p>
             <p className="mt-2 text-lg font-semibold tracking-[-0.02em] text-[var(--foreground)]">{booth.bookTitle}</p>
-            <p className="mt-2 text-sm leading-7 text-[var(--foreground-soft)]">{booth.bookDescription ?? booth.description}</p>
+            <p className="mt-2 whitespace-pre-line text-sm leading-7 text-[var(--foreground-soft)]">{booth.bookDescription ?? booth.description}</p>
           </div>
           <div className="rounded-[1.2rem] bg-[linear-gradient(135deg,rgba(234,183,190,0.16),rgba(255,255,255,0.72))] p-3">
             <p className="flex items-center gap-2 text-xs font-semibold tracking-[0.14em] text-[var(--foreground-soft)]">
               <Quote size={14} />
               AUTHOR NOTE
             </p>
-            <p className="mt-2 text-sm leading-7 text-[var(--foreground)]">{booth.authorMessage ?? booth.description}</p>
+            <p className="mt-2 whitespace-pre-line text-sm leading-7 text-[var(--foreground)]">{booth.authorMessage ?? booth.description}</p>
           </div>
         </div>
       </div>

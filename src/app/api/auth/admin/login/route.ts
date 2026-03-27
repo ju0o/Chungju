@@ -1,25 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminLogin, logAudit } from '@/lib/auth';
+import { adminLogin, adminLoginWithEntryCode, logAudit } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, password } = body;
+    const { email, password, entryCode } = body;
 
-    if (!email || !password) {
-      return NextResponse.json(
-        { success: false, error: '이메일과 비밀번호를 입력해주세요.' },
-        { status: 400 }
-      );
+    let loginResult: Awaited<ReturnType<typeof adminLogin>>;
+    if (typeof entryCode === 'string' && entryCode.trim().length > 0) {
+      loginResult = await adminLoginWithEntryCode(entryCode.trim());
+    } else {
+      if (!email || !password) {
+        return NextResponse.json(
+          { success: false, error: '이메일과 비밀번호를 입력해주세요.' },
+          { status: 400 }
+        );
+      }
+      loginResult = await adminLogin(email, password);
     }
 
-    const { token, session } = await adminLogin(email, password);
+    const { token, session } = loginResult;
 
     await logAudit({
       adminUserId: session.adminUserId,
       action: 'ADMIN_LOGIN',
       target: 'admin_session',
-      details: { email: session.email, role: session.role },
+      details: { email: session.email, role: session.role, byEntryCode: Boolean(entryCode) },
       ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || undefined,
     });
 

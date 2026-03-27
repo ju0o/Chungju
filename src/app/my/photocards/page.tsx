@@ -2,6 +2,7 @@
 
 import { useApiData } from '@/hooks/useApi';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface UserPhotocard {
   id: string;
@@ -57,7 +58,7 @@ export default function MyPhotocardsPage() {
           {photocards.map((item) => (
             <div key={item.id} className="section-card overflow-hidden rounded-2xl">
               <div className="relative aspect-[3/4] overflow-hidden">
-                <img src={item.photocard.imageUrl} alt={item.photocard.name} className="h-full w-full object-cover" />
+                <Image src={item.photocard.imageUrl} alt={item.photocard.name} fill className="object-cover" unoptimized />
                 <div className={`absolute top-2 right-2 rounded-full px-2 py-0.5 text-xs font-medium ${RARITY_COLORS[item.photocard.rarity] || RARITY_COLORS.COMMON}`}>
                   {RARITY_LABELS[item.photocard.rarity] || '일반'}
                 </div>

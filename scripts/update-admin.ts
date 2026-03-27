@@ -1,8 +1,9 @@
-const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcryptjs');
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+
 const p = new PrismaClient();
 
-(async () => {
+async function main() {
   const h = await bcrypt.hash('zxcv25801!', 12);
   const e = await p.adminUser.findFirst();
   if (e) {
@@ -17,5 +18,13 @@ const p = new PrismaClient();
     });
     console.log('Created:', a.id);
   }
-  process.exit(0);
-})();
+}
+
+main()
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await p.$disconnect();
+  });

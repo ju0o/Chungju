@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useApiData } from '@/hooks/useApi';
 import Link from 'next/link';
 
@@ -33,19 +33,19 @@ const THEMES = [
 export default function CertificatePage() {
   const { data, loading } = useApiData<StampData>('/api/stamps/my');
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    const saved = localStorage.getItem('festival-archive-session');
+    if (!saved) return '';
+    try {
+      const parsed = JSON.parse(saved);
+      return typeof parsed?.nickname === 'string' ? parsed.nickname : '';
+    } catch {
+      return '';
+    }
+  });
   const [theme, setTheme] = useState<(typeof THEMES)[number]>(THEMES[0]);
   const [generated, setGenerated] = useState(false);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('festival-archive-session');
-    if (saved) {
-      try {
-        const s = JSON.parse(saved);
-        if (s.nickname) setNickname(s.nickname);
-      } catch { /* ignore */ }
-    }
-  }, []);
 
   const generateCertificate = useCallback(() => {
     const canvas = canvasRef.current;

@@ -7,9 +7,9 @@ export function FestivalIntroCard({ settings }: { settings: EventSettings }) {
     <section className="section-card paper-stack relative rounded-[1.75rem] p-5">
       <CollageOrnaments className="opacity-70" />
       <SectionHeader
-        eyebrow="How To Join"
-        title="세 걸음으로 시작되는 오늘의 기록"
-        description="회원가입 없이 바로 시작하고, 공원에서 느낀 장면을 스탬프와 문장으로 남기면 됩니다."
+        eyebrow="How To Browse"
+        title="세 단계로 보는 작가와 책 부스"
+        description="관심 있는 작가를 찾고, 책 소개를 읽고, 현장 부스 정보를 확인해 방문 동선을 준비해보세요."
       />
       <div className="mt-5 grid gap-3">
         {settings.introSteps.map((step, index) => (

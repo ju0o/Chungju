@@ -58,13 +58,24 @@ export function AdminSectionPage({
   const [stampPoints, setStampPoints] = useState(initialStampPoints);
   const [guestbooks, setGuestbooks] = useState(initialGuestbooks);
   const [moments, setMoments] = useState(initialMoments);
+  const [saveMessage, setSaveMessage] = useState("");
 
   async function save() {
+    const prevFeatured = settings.featuredBookBoothId;
     if (["settings", "landing", "programs", "booths", "quotes", "cards", "status"].includes(section)) {
-      await updateEventSettings(settings);
+      const updated = await updateEventSettings(settings);
+      setSettings(updated);
+      if (section === "settings" && prevFeatured !== updated.featuredBookBoothId) {
+        setSaveMessage("추천 도서 즉시 반영됨");
+      } else {
+        setSaveMessage("저장 완료");
+      }
+      window.setTimeout(() => setSaveMessage(""), 1800);
     }
     if (section === "stamps") {
       await updateStampPoints(stampPoints);
+      setSaveMessage("저장 완료");
+      window.setTimeout(() => setSaveMessage(""), 1800);
     }
   }
 
@@ -99,6 +110,11 @@ export function AdminSectionPage({
         {section === "status" ? <StatusTab siteMode={settings.siteMode} onChange={(siteMode) => setSettings({ ...settings, siteMode })} allowedModes={role === "content_manager" ? ["preparing", "live", "ended"] : ["preparing", "live", "ended", "archive"]} /> : null}
         {section === "access" ? <AccessTab /> : null}
         {section === "logs" ? <LogsTab /> : null}
+        {saveMessage ? (
+          <section className="section-card rounded-[1.25rem] p-3 text-sm text-[var(--leaf-deep)]">
+            {saveMessage}
+          </section>
+        ) : null}
         {!["content", "access", "logs", "qr"].includes(section) ? (
           <button type="button" onClick={save} className="festival-button bg-[var(--accent)] text-white">
             저장하기

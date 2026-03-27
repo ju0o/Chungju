@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 const STORAGE_KEY = 'festival-favorites';
 
@@ -18,11 +18,7 @@ function setFavorites(ids: string[]) {
 }
 
 export function useFavorites() {
-  const [favorites, setFavoritesState] = useState<string[]>([]);
-
-  useEffect(() => {
-    setFavoritesState(getFavorites());
-  }, []);
+  const [favorites, setFavoritesState] = useState<string[]>(() => getFavorites());
 
   const toggle = useCallback((id: string) => {
     setFavoritesState((prev) => {

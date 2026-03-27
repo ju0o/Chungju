@@ -9,12 +9,14 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const festivalId = searchParams.get('festivalId');
     const category = searchParams.get('category');
+    const exclude = searchParams.get('exclude');
     const page = parseInt(searchParams.get('page') || '1');
     const pageSize = parseInt(searchParams.get('pageSize') || '50');
 
     const where: Record<string, unknown> = {};
     if (festivalId) where.festivalId = festivalId;
     if (category) where.category = category;
+    if (exclude) where.id = { not: exclude };
 
     // 관리자가 아니면 활성 부스만
     try {

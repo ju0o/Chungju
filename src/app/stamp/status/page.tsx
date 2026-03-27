@@ -2,6 +2,7 @@
 
 import { useApiData } from '@/hooks/useApi';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface StampProgress {
   id: string;
@@ -113,7 +114,7 @@ export default function StampStatusPage() {
               <Link key={scan.id} href={`/booths/${scan.qrCode.booth.id}`}>
                 <div className="flex items-center gap-3 rounded-xl border border-[var(--line)] bg-white/70 p-3 transition-colors hover:bg-white">
                   {scan.qrCode.booth.imageUrl ? (
-                    <img src={scan.qrCode.booth.imageUrl} alt="" className="h-10 w-10 rounded-lg object-cover" />
+                    <Image src={scan.qrCode.booth.imageUrl} alt="" width={40} height={40} className="h-10 w-10 rounded-lg object-cover" unoptimized />
                   ) : (
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-coral)]/10 text-lg">🏪</div>
                   )}

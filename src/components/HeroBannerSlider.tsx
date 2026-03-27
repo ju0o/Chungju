@@ -46,15 +46,15 @@ export function HeroBannerSlider() {
             <div className="absolute inset-0 bg-gradient-to-t from-[rgba(31,23,17,0.58)] via-[rgba(31,23,17,0.12)] to-transparent" />
           </div>
         ))}
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white">
-          <div className="max-w-[18ch] rounded-full border border-white/25 bg-black/20 px-3 py-2 text-xs tracking-[0.06em] backdrop-blur-sm">
+        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-[var(--foreground)]">
+          <div className="max-w-[18ch] rounded-full border border-[var(--line)] bg-white/82 px-3 py-2 text-xs tracking-[0.04em] backdrop-blur-sm">
             {slides[activeIndex]?.caption}
           </div>
           <div className="flex gap-2">
             {slides.map((slide, index) => (
               <span
                 key={slide.src}
-                className={`h-2.5 rounded-full transition-all ${index === activeIndex ? "w-8 bg-white" : "w-2.5 bg-white/45"}`}
+                className={`h-2.5 rounded-full transition-all ${index === activeIndex ? "w-8 bg-[var(--accent-strong)]" : "w-2.5 bg-[rgba(94,86,72,0.35)]"}`}
               />
             ))}
           </div>

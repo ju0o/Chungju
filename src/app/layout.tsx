@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Gowun_Batang, IBM_Plex_Sans_KR } from "next/font/google";
 import { FloatingFestivalNav } from "@/components/FloatingFestivalNav";
 import { PageViewTracker } from "@/components/PageViewTracker";
@@ -18,21 +18,22 @@ const bodyFont = IBM_Plex_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "#8 율량마르쉐 애착꽃시장",
-  description: "살아있던 적이 없는 꽃을 팝니다, 그런데 이제 영원히 시들지 않는. 청주 애착꽃시장 기록 웹앱.",
+  title: "율량마르쉐#8 독서 책 큐레이션 작가 부스",
+  description: "율량마르쉐#8 단일 독서 책 큐레이션 작가 부스를 위한 안내 페이지입니다.",
   manifest: "/manifest.json",
-  themeColor: "#de8565",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "애착꽃시장",
+    title: "율량마르쉐#8",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#de8565",
 };
 
 export default function RootLayout({

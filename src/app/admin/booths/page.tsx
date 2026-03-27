@@ -2,9 +2,12 @@
 
 import { useAdminSession, useApiData, fetchApi } from '@/hooks/useApi';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import type { BoothListItem } from '@/lib/domain-types';
+import { AdminQuickSidebar } from '@/components/admin/AdminQuickSidebar';
 
 interface BoothForm {
   name: string;
@@ -29,6 +32,7 @@ const emptyForm: BoothForm = { name: '', category: '', location: '', description
 export default function AdminBoothsPage() {
   const { session, loading: authLoading } = useAdminSession();
   const router = useRouter();
+  const pathname = usePathname();
   const { data: festivals } = useApiData<FestivalItem[]>(session ? '/api/festivals' : null);
   const activeFestivalId = festivals?.find(f => f.isActive)?.id || festivals?.[0]?.id;
   const { data: booths, loading, refetch } = useApiData<BoothListItem[]>(session ? '/api/booths?pageSize=200' : null);
@@ -36,8 +40,22 @@ export default function AdminBoothsPage() {
   const [form, setForm] = useState<BoothForm>(emptyForm);
   const [showForm, setShowForm] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [coverOptions, setCoverOptions] = useState<string[]>([]);
+  const [coverLoading, setCoverLoading] = useState(true);
 
   useEffect(() => { if (!authLoading && !session) router.push('/admin/login'); }, [authLoading, session, router]);
+  useEffect(() => {
+    if (!session) return;
+    fetch('/api/admin/book-covers', { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json?.success && Array.isArray(json?.data)) {
+          setCoverOptions(json.data);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setCoverLoading(false));
+  }, [session]);
 
   if (authLoading || loading) return <div className="p-6 text-center">로딩 중...</div>;
   if (!session) return null;
@@ -87,7 +105,10 @@ export default function AdminBoothsPage() {
   );
 
   return (
-    <div className="p-4 sm:p-6 max-w-5xl mx-auto">
+    <main className="min-h-screen bg-[#f3f4f6] p-4 md:p-6">
+      <div className="mx-auto grid max-w-[1400px] gap-4 lg:grid-cols-[260px,1fr]">
+        <AdminQuickSidebar pathname={pathname} />
+        <div className="p-0 sm:p-0 max-w-5xl">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold">부스 관리</h1>
         <div className="flex gap-2">
@@ -109,6 +130,36 @@ export default function AdminBoothsPage() {
             {F('지도 X', 'mapX')}
             {F('지도 Y', 'mapY')}
           </div>
+          <div className="mb-4 rounded-xl border border-[var(--line)] bg-[var(--paper)]/50 p-3">
+            <p className="text-sm font-medium text-gray-700">표지 썸네일 미리보기</p>
+            {form.imageUrl ? (
+              <div className="mt-2 flex items-center gap-3">
+                <Image src={form.imageUrl} alt="선택된 표지" width={72} height={96} className="h-24 w-[72px] rounded-md border object-cover" unoptimized />
+                <p className="text-xs text-gray-600 break-all">{form.imageUrl}</p>
+              </div>
+            ) : (
+              <p className="mt-2 text-xs text-gray-500">이미지 URL을 입력하거나 아래 표지에서 선택해주세요.</p>
+            )}
+          </div>
+          <div className="mb-4 rounded-xl border border-[var(--line)] bg-[var(--paper)]/50 p-3">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-sm font-medium text-gray-700">도서 표지 선택</p>
+              <span className="text-xs text-gray-500">{coverLoading ? '불러오는 중...' : `${coverOptions.length}개`}</span>
+            </div>
+            <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
+              {coverOptions.map((cover) => (
+                <button
+                  key={cover}
+                  type="button"
+                  onClick={() => setForm((prev) => ({ ...prev, imageUrl: cover }))}
+                  className={`rounded-lg border p-1 transition ${form.imageUrl === cover ? 'border-[var(--accent-coral)] ring-2 ring-[var(--accent-coral)]/20' : 'border-[var(--line)]'}`}
+                  title={cover}
+                >
+                  <Image src={cover} alt="도서 표지" width={68} height={90} className="h-20 w-full rounded object-cover" unoptimized />
+                </button>
+              ))}
+            </div>
+          </div>
           {F('설명', 'description', true)}
           <div className="flex gap-2 mt-2">
             <button onClick={handleSubmit} disabled={busy || !form.name} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm disabled:opacity-50">{editing ? '수정' : '등록'}</button>
@@ -121,7 +172,7 @@ export default function AdminBoothsPage() {
         {booths?.map(b => (
           <div key={b.id} className="border rounded-xl p-4 bg-white shadow-sm flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0">
-              {b.imageUrl && <img src={b.imageUrl} alt="" className="w-12 h-12 rounded-lg object-cover" />}
+              {b.imageUrl && <Image src={b.imageUrl} alt="" width={48} height={48} className="h-12 w-12 rounded-lg object-cover" unoptimized />}
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <span className={`w-2 h-2 rounded-full ${b.isActive ? 'bg-green-500' : 'bg-gray-400'}`} />
@@ -139,6 +190,8 @@ export default function AdminBoothsPage() {
         ))}
         {!booths?.length && <p className="text-center text-gray-500 py-12">등록된 부스가 없습니다.</p>}
       </div>
-    </div>
+        </div>
+      </div>
+    </main>
   );
 }
