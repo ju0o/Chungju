@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BookShareActions } from "@/components/BookShareActions";
-import { resolveBookCover } from "@/lib/book-utils";
+import { inferBookGenre, resolveBookCover } from "@/lib/book-utils";
 import { getSiteSettings } from "@/lib/site-data";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -36,6 +36,7 @@ export default async function BookDetailPage({ params }: { params: Promise<{ id:
   const prevBook = currentIndex > 0 ? orderedBooks[currentIndex - 1] : null;
   const nextBook = currentIndex < orderedBooks.length - 1 ? orderedBooks[currentIndex + 1] : null;
   const cover = resolveBookCover(booth.bookTitle, booth.imageUrl);
+  const genre = inferBookGenre(booth);
   const snsValue = (booth.snsLink ?? "").trim();
   const snsHref = snsValue
     ? snsValue.startsWith("http")
@@ -56,7 +57,7 @@ export default async function BookDetailPage({ params }: { params: Promise<{ id:
           <div className="mt-2 flex flex-wrap gap-1.5 text-[11px]">
             <span className="rounded-full bg-white/80 px-2 py-0.5">{booth.bookPrice ?? "현장 문의"}</span>
             <span className="rounded-full bg-white/80 px-2 py-0.5">{booth.bookStock ?? 0}권</span>
-            <span className="rounded-full bg-white/80 px-2 py-0.5">{booth.subtitle}</span>
+            <span className="rounded-full bg-white/80 px-2 py-0.5">{genre}</span>
           </div>
         </div>
       </section>
